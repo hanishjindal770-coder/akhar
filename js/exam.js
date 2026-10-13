@@ -7,6 +7,7 @@ const PRESETS = [
   {id: 'quick', name: 'Quick Punjabi mock', sub: 'Punjabi only · 5 minutes', parts: ['pa'], min: 5, back: true}
 ];
 const PASS_WPM = 30, PASS_ACC = 92;
+const CHUNK_MIN = 25, CHUNK_MAX = 45, CHUNK_NEXT = 0.8;   // chunk size in words; share of a chunk to type before moving on
 const LANG = {pa: 'Punjabi (Raavi, INSCRIPT)', en: 'English'};
 
 let X = null;    // the whole sitting
@@ -31,6 +32,18 @@ function passageFor(lang, minutes) {
   return {title: out[0].t, id: out[0].id, text: canon(out.map(p => p.x).join(' '))};
 }
 
+// Split a passage into chunks of whole sentences, like the exam software shows it.
+function chunkText(text) {
+  const words = text.split(' '), out = []; let cur = [];
+  words.forEach(w => {
+    cur.push(w);
+    const end = /[।॥.?!]$/.test(w);
+    if ((end && cur.length >= CHUNK_MIN) || cur.length >= CHUNK_MAX) { out.push(cur.join(' ')); cur = []; }
+  });
+  if (cur.length) { if (cur.length < 8 && out.length) out[out.length - 1] += ' ' + cur.join(' '); else out.push(cur.join(' ')); }
+  return out;
+}
+
 /* ---------- login ---------- */
 function renderPresets() {
   const sel = PRESETS.find(p => p.id === $('#ex-app').dataset.preset) ? $('#ex-app').dataset.preset : 'psssb';
@@ -45,7 +58,7 @@ function login(e) {
   const preset = PRESETS.find(p => p.id === $('input[name=preset]:checked').value);
   const roll = $('#ex-roll').value.trim() || String(Math.floor(10000000 + Math.random() * 89999999));
   DB.settings.cand = name; save();
-  X = {preset, name, roll, parts: [], partIdx: 0, startedAt: Date.now()};
+  X = {preset, name, roll, parts: [], partIdx: 0, startedAt: Date.now(), chunked: true};
   renderInstructions();
   screen('instr');
 }
@@ -61,28 +74,32 @@ function renderInstructions() {
     <li>The timer starts when you press <b>Start test</b> and the test submits on its own when time runs out. You can submit early, but speed is still worked out over the full ${p.min} minutes, as in the real test.</li>
     <li>To qualify you need at least <b>${PASS_WPM} words per minute</b> with at least <b>${PASS_ACC}% accuracy</b> in ${p.parts.length > 1 ? 'each part' : 'the test'}.</li>
     <li>${p.back ? 'Backspace is allowed for corrections.' : '<b>Backspace is switched off.</b> You cannot correct mistakes.'}</li>
+    <li id="in-chunkli"${X.chunked ? '' : ' hidden'}>The passage appears one chunk at a time, as in the exam. Press <b>Enter</b> or <b>↓</b> for the next chunk once you have typed ${Math.round(CHUNK_NEXT * 100)}% of the current one, and <b>Page Up</b> / <b>Page Down</b> to move between chunks.</li>
     <li>Mistakes are not shown while you type, as in the real test. A wrong, missing or extra word is a full mistake; a spacing error is a half mistake.</li>
     <li>Copy, paste and right click are disabled. The test opens full screen; leaving the window is recorded on your result.</li>
     ${p.parts.includes('pa') ? '<li>For Punjabi, type on your normal English keyboard. The test converts it to the INSCRIPT layout used with Raavi font. If the Windows Punjabi keyboard is already on, that works too.</li>' : ''}`;
   $('#in-check').hidden = !p.parts.includes('pa');
   $('#in-kbtest').value = ''; $('#in-kbok').hidden = true;
-  $('#in-agree').checked = false; $('#in-start').disabled = true;
+  $('#in-agree').checked = false; $('#in-start').disabled = true; $('#in-chunk').checked = X.chunked;
 }
 
 /* ---------- running a part ---------- */
 function startPart() {
   const lang = X.preset.parts[X.partIdx], min = X.preset.min;
   const ps = passageFor(lang, min);
-  P = {lang, min, ...ps, start: performance.now(), keys: 0, backs: 0, blurs: 0, timer: 0, running: true};
+  P = {lang, min, ...ps, start: performance.now(), keys: 0, backs: 0, blurs: 0, timer: 0, running: true, chunked: X.chunked};
+  if (P.chunked) { P.chunks = chunkText(P.text); P.typed = P.chunks.map(() => ''); P.ci = 0; }
   $('#ex-part').textContent = `${X.preset.parts.length > 1 ? `Part ${X.partIdx + 1} of ${X.preset.parts.length} · ` : ''}${lang === 'pa' ? 'Punjabi' : 'English'} typing test`;
   $('#ex-cand').textContent = `${X.name} · ${X.roll}`;
   const src = $('#ex-src');
-  src.textContent = P.text; src.lang = lang; src.scrollTop = 0;
+  src.textContent = P.chunked ? P.chunks[0] : P.text; src.lang = lang; src.scrollTop = 0;
+  $('#ex-chunkbar').hidden = !P.chunked; $('#ex-run').classList.toggle('chunked', P.chunked); if (P.chunked) showChunk();
   src.classList.toggle('en', lang === 'en');
   const t = ta();
   t.value = ''; t.disabled = false; t.lang = lang; t.classList.toggle('en', lang === 'en');
   t.placeholder = lang === 'pa' ? 'ਇੱਥੇ ਟਾਈਪ ਕਰੋ' : 'Type here';
   $('#ex-kbbtn').hidden = lang !== 'pa';
+  $('#ex-prev').hidden = $('#ex-next').hidden = !P.chunked;
   $('#ex-kbwrap').hidden = true; t.inputMode = '';
   $('#ex-confirm').hidden = true;
   screen('run');
@@ -96,6 +113,30 @@ function tick() {
   $('#ex-clock').classList.toggle('low', s <= 60);
   if (left <= 0) endPart(true);
 }
+function chunkWords(i) { const v = (i === P.ci ? ta().value : P.typed[i]).trim(); return v ? v.split(/\s+/).length : 0; }
+function showChunk(msg) {
+  $('#ex-src').textContent = P.chunks[P.ci];
+  $('#ex-chunkno').textContent = `Chunk ${P.ci + 1} of ${P.chunks.length}`;
+  $('#ex-msg').textContent = msg || 'Enter or ↓ for the next chunk. Page Up and Page Down move between chunks.';
+  $('#ex-msg').classList.toggle('warn', !!msg);
+}
+function goChunk(d) {
+  const to = P.ci + d;
+  if (to < 0 || to >= P.chunks.length) { showChunk(to < 0 ? 'This is the first chunk.' : 'This is the last chunk. Submit when you are done.'); return; }
+  if (d > 0) {
+    const need = Math.ceil(P.chunks[P.ci].split(' ').length * CHUNK_NEXT);
+    if (chunkWords(P.ci) < need) { showChunk(`Type at least ${need} words of this chunk before moving to the next one.`); return; }
+  }
+  P.typed[P.ci] = ta().value;
+  P.ci = to;
+  const t = ta(); t.value = P.typed[P.ci]; t.setSelectionRange(t.value.length, t.value.length); t.scrollTop = t.scrollHeight;
+  showChunk();
+}
+function typedAll() {
+  if (!P.chunked) return ta().value;
+  P.typed[P.ci] = ta().value;
+  return P.typed.map(x => x.trim()).filter(Boolean).join(' ');
+}
 function insert(ch) {
   const t = ta();
   t.setRangeText(ch, t.selectionStart, t.selectionEnd, 'end');
@@ -107,9 +148,10 @@ function endPart(timeUp) {
   ta().disabled = true;
   // as in the real test, speed is worked out over the full allotted time even if you submit early
   const used = P.min, took = timeUp ? P.min : (performance.now() - P.start) / 60000;
-  const r = scoreTest(P.text, ta().value, used);
+  const typed = typedAll();
+  const r = scoreTest(P.text, typed, used);
   r.passed = r.grossWpm >= PASS_WPM && r.accuracy >= PASS_ACC;
-  X.parts.push({lang: P.lang, title: P.title, id: P.id, min: used, took, timeUp, keys: P.keys, backs: P.backs, blurs: P.blurs, text: P.text, typed: ta().value, r});
+  X.parts.push({lang: P.lang, title: P.title, id: P.id, min: used, took, timeUp, keys: P.keys, backs: P.backs, blurs: P.blurs, text: P.text, typed, r});
   DB.tests.push({d: Date.now(), p: P.id, t: P.title, m: +used.toFixed(2), g: r.grossWpm, n: +r.netWpm.toFixed(1), a: +r.accuracy.toFixed(1), f: r.full, h: r.half, ok: r.passed, x: X.preset.id});
   if (DB.tests.length > 200) DB.tests.shift();
   save();
@@ -193,6 +235,7 @@ function initExam() {
   renderPresets();
   $('#s-login').addEventListener('submit', login);
   $('#in-back').addEventListener('click', () => screen('login'));
+  $('#in-chunk').addEventListener('change', e => { if (X) X.chunked = e.target.checked; $('#in-chunkli').hidden = !e.target.checked; });
   $('#in-agree').addEventListener('change', e => { $('#in-start').disabled = !e.target.checked; });
   $('#in-kbtest').addEventListener('keydown', e => {
     if (e.key === 'Backspace' || e.key === 'Tab') return;
@@ -211,6 +254,8 @@ function initExam() {
   const t = ta();
   t.addEventListener('keydown', e => {
     if (!P || !P.running) { e.preventDefault(); return; }
+    if (P.chunked && (e.key === 'Enter' || e.key === 'ArrowDown' || e.key === 'PageDown')) { e.preventDefault(); goChunk(1); return; }
+    if (P.chunked && e.key === 'PageUp') { e.preventDefault(); goChunk(-1); return; }
     if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); return; }
     if (e.key === 'Backspace' || e.key === 'Delete') { if (!X.preset.back) e.preventDefault(); else P.backs++; return; }
     if ((e.ctrlKey || e.metaKey) && /^[vxcaz]$/i.test(e.key)) { e.preventDefault(); return; }
@@ -244,6 +289,8 @@ function initExam() {
   $('#ex-submit').addEventListener('click', () => { $('#ex-confirm').hidden = false; $('#ex-yes').focus(); });
   $('#ex-no').addEventListener('click', () => { $('#ex-confirm').hidden = true; ta().focus(); });
   $('#ex-yes').addEventListener('click', () => endPart(false));
+  $('#ex-prev').addEventListener('click', () => { goChunk(-1); ta().focus(); });
+  $('#ex-next').addEventListener('click', () => { goChunk(1); ta().focus(); });
 
   $('#rs-print').addEventListener('click', () => window.print());
   $('#rs-again').addEventListener('click', () => { X = null; P = null; screen('login'); });

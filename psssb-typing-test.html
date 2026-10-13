@@ -42,6 +42,7 @@
       <p><b id="in-exam"></b><br><span class="muted" id="in-cand"></span></p>
       <ol class="ex-instr" id="in-list"></ol>
       <div class="field" id="in-check"><label for="in-kbtest">Keyboard check: press <kbd>k</kbd> and you should see <span class="guru">ਕ</span></label><input id="in-kbtest" type="text" lang="pa" class="guru" autocomplete="off" spellcheck="false"><small id="in-kbok" class="ok" hidden>Your keyboard is typing Punjabi.</small></div>
+      <label class="check"><input type="checkbox" id="in-chunk" checked><span><b>Show the passage in chunks, as in the exam</b><br><span class="muted">Turn off to see the whole passage at once.</span></span></label>
       <label class="check"><input type="checkbox" id="in-agree"><span>I have read and understood the instructions.</span></label>
       <div class="row"><button type="button" class="btn" id="in-start" disabled>Start test</button><button type="button" class="btn alt" id="in-back">Back</button></div>
     </section>
@@ -63,9 +64,10 @@
   <div id="ex-shell" class="ex-shell" hidden>
     <div class="ex-bar"><span class="ex-brand guru">ਅੱਖਰ</span><span id="ex-part" class="ex-part"></span><span id="ex-cand" class="ex-cand"></span><span class="ex-time">Time left <span id="ex-clock" class="clock">10:00</span></span></div>
     <div id="ex-run" class="ex-body">
+      <div class="ex-chunkbar" id="ex-chunkbar" hidden><b id="ex-chunkno"></b><span id="ex-msg" aria-live="polite"></span></div>
       <div class="ex-src" id="ex-src"></div>
       <textarea id="ex-input" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Type the passage here"></textarea>
-      <div class="row"><button type="button" class="btn" id="ex-submit">Submit</button><button type="button" class="btn alt" id="ex-kbbtn" hidden>On-screen keyboard</button></div>
+      <div class="row"><button type="button" class="btn alt" id="ex-prev" hidden>↑ Previous chunk</button><button type="button" class="btn alt" id="ex-next" hidden>Next chunk ↓</button><button type="button" class="btn" id="ex-submit">Submit</button><button type="button" class="btn alt" id="ex-kbbtn" hidden>On-screen keyboard</button></div>
       <div id="ex-kbwrap" hidden><div class="kb-wrap"><div class="kb" id="ex-kb"></div></div></div>
       <div id="ex-confirm" class="ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="ex-ctitle"><div class="panel"><h3 id="ex-ctitle">Submit this part?</h3><p class="muted">You cannot change it after submitting.</p><div class="row"><button type="button" class="btn" id="ex-yes">Yes, submit</button><button type="button" class="btn alt" id="ex-no">Keep typing</button></div></div></div>
     </div>

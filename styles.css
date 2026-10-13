@@ -340,3 +340,6 @@ body.exam-lock{overflow:hidden}
   .top,footer,.ad-slot,.no-print,.article>:not(#ex-app),#s-login,#s-instr{display:none!important}
   body{background:#fff;color:#000} .panel{border:1px solid #999}
 }
+.ex-chunkbar{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;font-size:.92rem}
+.ex-chunkbar #ex-msg{color:var(--muted)} .ex-chunkbar #ex-msg.warn{color:var(--bad);font-weight:600}
+.ex-body.chunked .ex-src{flex:0 0 auto;max-height:40%}
