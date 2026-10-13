@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PSSSB Typing Test Online: free Punjabi (Raavi) and English mock · Akhar</title>
+<meta name="description" content="Free PSSSB clerk typing test online in exam format: Punjabi in Raavi font and English, 10 minutes each, fixed timer, auto submit, and a result sheet with gross and net speed, full and half mistakes and accuracy.">
+<link rel="canonical" href="https://punjabexamprep.in/psssb-typing-test.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700;800&family=Mukta+Mahee:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<script>try{var t=(JSON.parse(localStorage.getItem('akhar.v1'))||{}).settings;t=t&&t.theme;if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What typing speed is needed for the PSSSB clerk test?", "acceptedAnswer": {"@type": "Answer", "text": "Most PSSSB clerk-type recruitments ask for 30 words per minute in Punjabi and 30 words per minute in English, with at least 92% accuracy. Always confirm the figure in the notice for your post."}}, {"@type": "Question", "name": "Which font and keyboard are used for the Punjabi typing test?", "acceptedAnswer": {"@type": "Answer", "text": "Punjabi is typed in the Unicode Raavi font on the INSCRIPT keyboard, the default Punjabi keyboard in Windows. This mock test uses the same layout."}}, {"@type": "Question", "name": "Is Backspace allowed in the PSSSB typing test?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the notice. This mock lets you practise both ways: the standard tests allow Backspace and the strict mock switches it off."}}, {"@type": "Question", "name": "How is net speed calculated?", "acceptedAnswer": {"@type": "Answer", "text": "Every full mistake costs 5 characters and every half mistake 2.5 characters. Net characters are gross characters minus these error characters, and net speed is net characters divided by 5 and by the minutes taken."}}, {"@type": "Question", "name": "Is this the official PSSSB test?", "acceptedAnswer": {"@type": "Answer", "text": "No. This is a free, independent practice test that follows the format and scoring published in Punjab typing-test notices. It is not connected with PSSSB."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><b>ਅੱਖਰ</b><span>Akhar</span></a>
+  <nav class="nav" aria-label="Main"><a href="index.html#learn">Lessons</a><a href="index.html#practice">Practice</a><a href="psssb-typing-test.html" class="on">PSSSB test</a><a href="raavi-typing-guide.html">Raavi guide</a><a href="punjab-typing-test-tips.html">Exam tips</a></nav>
+</div></header>
+<main class="wrap article">
+  <div class="eyebrow">Mock test · Punjabi and English</div>
+  <h1>PSSSB typing test online</h1>
+
+  <p class="lede">A full mock of the Punjab Subordinate Services Selection Board typing test. Log in with your name, read the instructions, then type a Punjabi passage in Raavi font and an English passage against a fixed timer. The result sheet is scored the way the board scores it.</p>
+
+  <div id="ex-app">
+    <form id="s-login" class="panel ex-card" novalidate>
+      <div class="ex-cardhead"><span class="guru">ਉਮੀਦਵਾਰ ਲੌਗਇਨ</span><b>Candidate login</b></div>
+      <fieldset class="field"><legend class="lab">Choose your test</legend><div class="presets" id="ex-presets"></div></fieldset>
+      <div class="ex-two">
+        <div class="field"><label for="ex-name">Candidate name</label><input id="ex-name" type="text" autocomplete="name" maxlength="60" required><small id="ex-name-err" class="err" hidden>Enter your name to continue.</small></div>
+        <div class="field"><label for="ex-roll">Roll number <span class="muted">(optional)</span></label><input id="ex-roll" type="text" inputmode="numeric" maxlength="20"><small>Left empty, a practice roll number is made up for the result sheet.</small></div>
+      </div>
+      <p class="muted" style="font-size:.88rem">Your name and results stay in this browser. Nothing is sent anywhere.</p>
+      <button class="btn" type="submit" id="ex-login-btn" style="align-self:flex-start">Log in</button>
+    </form>
+
+    <section id="s-instr" class="panel ex-card" hidden>
+      <div class="ex-cardhead"><span class="guru">ਹਦਾਇਤਾਂ</span><b>Instructions</b></div>
+      <p><b id="in-exam"></b><br><span class="muted" id="in-cand"></span></p>
+      <ol class="ex-instr" id="in-list"></ol>
+      <div class="field" id="in-check"><label for="in-kbtest">Keyboard check: press <kbd>k</kbd> and you should see <span class="guru">ਕ</span></label><input id="in-kbtest" type="text" lang="pa" class="guru" autocomplete="off" spellcheck="false"><small id="in-kbok" class="ok" hidden>Your keyboard is typing Punjabi.</small></div>
+      <label class="check"><input type="checkbox" id="in-agree"><span>I have read and understood the instructions.</span></label>
+      <div class="row"><button type="button" class="btn" id="in-start" disabled>Start test</button><button type="button" class="btn alt" id="in-back">Back</button></div>
+    </section>
+
+    <section id="s-result" class="ex-sheet" hidden>
+      <div class="panel ex-card">
+        <div class="ex-cardhead"><span class="guru">ਨਤੀਜਾ</span><b>Typing test result sheet</b></div>
+        <div class="verdict" id="rs-verdict"></div>
+        <dl class="rs-meta" id="rs-meta"></dl>
+        <div class="tbl"><table class="rs-table" id="rs-table"></table></div>
+        <div id="rs-whywrap" class="note-box"><b>Why not qualified</b><ul id="rs-why"></ul></div>
+        <p class="muted" style="font-size:.85rem">Practice result from punjabexamprep.in. Not an official PSSSB result.</p>
+        <div class="row no-print"><button type="button" class="btn" id="rs-again">Take another test</button><button type="button" class="btn alt" id="rs-print">Print or save as PDF</button><a class="btn alt" href="index.html#progress">See progress</a></div>
+      </div>
+      <div id="rs-parts" class="no-print"></div>
+    </section>
+  </div>
+
+  <div id="ex-shell" class="ex-shell" hidden>
+    <div class="ex-bar"><span class="ex-brand guru">ਅੱਖਰ</span><span id="ex-part" class="ex-part"></span><span id="ex-cand" class="ex-cand"></span><span class="ex-time">Time left <span id="ex-clock" class="clock">10:00</span></span></div>
+    <div id="ex-run" class="ex-body">
+      <div class="ex-src" id="ex-src"></div>
+      <textarea id="ex-input" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Type the passage here"></textarea>
+      <div class="row"><button type="button" class="btn" id="ex-submit">Submit</button><button type="button" class="btn alt" id="ex-kbbtn" hidden>On-screen keyboard</button></div>
+      <div id="ex-kbwrap" hidden><div class="kb-wrap"><div class="kb" id="ex-kb"></div></div></div>
+      <div id="ex-confirm" class="ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="ex-ctitle"><div class="panel"><h3 id="ex-ctitle">Submit this part?</h3><p class="muted">You cannot change it after submitting.</p><div class="row"><button type="button" class="btn" id="ex-yes">Yes, submit</button><button type="button" class="btn alt" id="ex-no">Keep typing</button></div></div></div>
+    </div>
+    <div id="ex-break" class="ex-body ex-break" hidden>
+      <div class="panel"><h2>Part submitted</h2><p id="br-done"></p><p id="br-next"></p><button type="button" class="btn" id="br-start">Start part 2</button></div>
+    </div>
+  </div>
+
+  <h2>About the PSSSB typing test</h2>
+  <p>Posts such as Clerk, Clerk-cum-Data Entry Operator, Legal Clerk and similar posts filled by the Punjab Subordinate Services Selection Board usually have a qualifying typing test after the written exam. You type one passage in Punjabi and one in English on a computer. Marks are not added to your merit; you only need to qualify.</p>
+  <ul>
+    <li><b>Punjabi:</b> Unicode Raavi font on the INSCRIPT keyboard. See the <a href="punjabi-keyboard-layout.html">layout chart</a> and the <a href="raavi-typing-guide.html">Raavi typing guide</a>.</li>
+    <li><b>English:</b> a normal QWERTY keyboard.</li>
+    <li><b>Standard:</b> 30 words per minute with at least 92% accuracy in each language.</li>
+    <li><b>Time:</b> 10 minutes per passage in this mock. Check the time and rules in your own notice, because they can change between recruitments.</li>
+  </ul>
+  <p class="note">This mock follows the format and scoring in published Punjab typing-test notices. It is an independent practice tool, not the official test.</p>
+
+  <h2>How this mock scores you</h2>
+  <ul>
+    <li><b>Full mistake:</b> a wrong, missing or extra word. In Punjabi a wrong matra, addak or half letter makes the whole word wrong.</li>
+    <li><b>Half mistake:</b> a spacing error, where two words are joined or one is split.</li>
+    <li><b>Error characters</b> = mistakes × 5, and <b>net characters</b> = gross characters − error characters.</li>
+    <li><b>Gross speed</b> = gross characters ÷ 5 ÷ minutes. <b>Accuracy</b> = net characters ÷ gross characters × 100.</li>
+  </ul>
+  <p>The full method with a worked example is in <a href="punjab-typing-test-tips.html">Punjab typing test rules and tips</a>. If you are still learning the keys, start with the <a href="index.html#learn">57 free lessons</a>.</p>
+
+  <h2>Frequently asked questions</h2>
+  <h3>What typing speed is needed for the PSSSB clerk test?</h3>
+  <p>Most PSSSB clerk-type recruitments ask for 30 words per minute in Punjabi and 30 words per minute in English, with at least 92% accuracy. Always confirm the figure in the notice for your post.</p>
+  <h3>Which font and keyboard are used for the Punjabi typing test?</h3>
+  <p>Punjabi is typed in the Unicode Raavi font on the INSCRIPT keyboard, the default Punjabi keyboard in Windows. This mock test uses the same layout.</p>
+  <h3>Is Backspace allowed in the PSSSB typing test?</h3>
+  <p>It depends on the notice. This mock lets you practise both ways: the standard tests allow Backspace and the strict mock switches it off.</p>
+  <h3>How is net speed calculated?</h3>
+  <p>Every full mistake costs 5 characters and every half mistake 2.5 characters. Net characters are gross characters minus these error characters, and net speed is net characters divided by 5 and by the minutes taken.</p>
+  <h3>Is this the official PSSSB test?</h3>
+  <p>No. This is a free, independent practice test that follows the format and scoring published in Punjab typing-test notices. It is not connected with PSSSB.</p>
+
+<div class="ad-slot" hidden></div>
+
+</main>
+<footer><div class="wrap foot">
+  <nav class="foot-links" aria-label="Site"><a href="about.html">About</a> · <a href="psssb-typing-test.html">PSSSB typing test</a> · <a href="raavi-typing-guide.html">Raavi typing guide</a> · <a href="punjab-typing-test-tips.html">Typing test tips</a> · <a href="punjabi-keyboard-layout.html">Keyboard layout chart</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy policy</a> · <a href="terms.html">Terms of use</a></nav>
+  <p>Akhar is an independent practice tool and is not affiliated with PSSSB or any recruitment board. Scoring follows the method published in Punjab typing-test notices; always check your own notice.</p>
+</div></footer>
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/exam.js"></script>
+<script src="js/ads.js"></script>
+</body>
+</html>

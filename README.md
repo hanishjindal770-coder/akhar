@@ -6,6 +6,7 @@ A free Punjabi typing tutor for the **Raavi font** and the **Gurmukhi INSCRIPT k
 
 - **57 lessons in seven stages, each with 6 to 8 exercises.** They start with ਕ ਤ ਰ ਚ on the home row and go through the matras, the Shift letters, tippi and bindi, addak (ੱ), pair bindi (਼), pairi rara (੍ਰ) and numerals. Then come themed word lists, sentences and full exam paragraphs. Each drill uses real Punjabi words built only from the keys learned so far.
 - **On-screen keyboard.** It highlights the next key and shows which finger presses it. You can tap it on phones.
+- **PSSSB mock test** at `psssb-typing-test.html`. It runs Punjabi then English like the real sitting, in a full-screen exam screen with no live error marks, and ends with a printable result sheet.
 - **Practice mode.** It has 12 exam-style passages, common words, sentences, and a drill built from the keys you miss most.
 - **Timed exam test** (2, 5, 10 or 15 minutes). It is scored the way the board's typing-test notices describe:
   - full mistake: a missed, wrong or extra word, or missing punctuation
@@ -33,4 +34,6 @@ To host it for free, turn on GitHub Pages: go to Settings → Pages, choose Depl
 - `index.html`: the page markup
 - `styles.css`: the theme, with both light and dark modes
 - `js/data.js`: the keyboard layout, lessons, word bank and exam passages
-- `js/app.js`: the lesson generator, drill runner, exam scoring, progress tracking and on-screen keyboard
+- `js/core.js`: shared helpers, key maps, storage, on-screen keyboard and exam scoring
+- `js/app.js`: the lesson generator, drill runner, quick exam test and progress tracking
+- `js/exam.js` and `psssb-typing-test.html`: the PSSSB mock test with candidate login, instructions, a fixed timer per part (Punjabi, then English), auto submit and a printable result sheet
