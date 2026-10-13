@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Punjabi typing test online: check your speed in 5 minutes · Akhar</title>
+<meta name="description" content="Free Punjabi typing test online. Check your Punjabi typing speed and accuracy in 5 or 10 minutes on the Gurmukhi INSCRIPT keyboard, with a full mistake-by-mistake result.">
+<link rel="canonical" href="https://punjabexamprep.in/punjabi-typing-test-online.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700;800&family=Mukta+Mahee:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<script>try{var t=(JSON.parse(localStorage.getItem('akhar.v1'))||{}).settings;t=t&&t.theme;if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><b>ਅੱਖਰ</b><span>Akhar</span></a>
+  <nav class="nav" aria-label="Main"><a href="index.html#learn">Lessons</a><a href="index.html#practice">Practice</a><a href="psssb-typing-test.html">PSSSB test</a><a href="raavi-typing-guide.html">Raavi guide</a><a href="punjab-typing-test-tips.html">Exam tips</a></nav>
+</div></header>
+<main class="wrap article">
+  <div class="eyebrow">Speed test · Punjabi</div>
+  <h1>Punjabi typing test online</h1>
+
+  <p class="lede">Find out how fast you type Punjabi right now. The quick test takes 5 minutes; switch to a 10-minute test when you want exam conditions. No signup and nothing to install.</p>
+  <div id="ex-app" data-preset="quick">
+    <form id="s-login" class="panel ex-card" novalidate>
+      <div class="ex-cardhead"><span class="guru">ਉਮੀਦਵਾਰ ਲੌਗਇਨ</span><b>Candidate login</b></div>
+      <fieldset class="field"><legend class="lab">Choose your test</legend><div class="presets" id="ex-presets"></div></fieldset>
+      <div class="ex-two">
+        <div class="field"><label for="ex-name">Candidate name</label><input id="ex-name" type="text" autocomplete="name" maxlength="60" required><small id="ex-name-err" class="err" hidden>Enter your name to continue.</small></div>
+        <div class="field"><label for="ex-roll">Roll number <span class="muted">(optional)</span></label><input id="ex-roll" type="text" inputmode="numeric" maxlength="20"><small>Left empty, a practice roll number is made up for the result sheet.</small></div>
+      </div>
+      <p class="muted" style="font-size:.88rem">Your name and results stay in this browser. Nothing is sent anywhere.</p>
+      <button class="btn" type="submit" id="ex-login-btn" style="align-self:flex-start">Log in</button>
+    </form>
+
+    <section id="s-instr" class="panel ex-card" hidden>
+      <div class="ex-cardhead"><span class="guru">ਹਦਾਇਤਾਂ</span><b>Instructions</b></div>
+      <p><b id="in-exam"></b><br><span class="muted" id="in-cand"></span></p>
+      <ol class="ex-instr" id="in-list"></ol>
+      <div class="field" id="in-check"><label for="in-kbtest">Keyboard check: press <kbd>k</kbd> and you should see <span class="guru">ਕ</span></label><input id="in-kbtest" type="text" lang="pa" class="guru" autocomplete="off" spellcheck="false"><small id="in-kbok" class="ok" hidden>Your keyboard is typing Punjabi.</small></div>
+      <label class="check"><input type="checkbox" id="in-agree"><span>I have read and understood the instructions.</span></label>
+      <div class="row"><button type="button" class="btn" id="in-start" disabled>Start test</button><button type="button" class="btn alt" id="in-back">Back</button></div>
+    </section>
+
+    <section id="s-result" class="ex-sheet" hidden>
+      <div class="panel ex-card">
+        <div class="ex-cardhead"><span class="guru">ਨਤੀਜਾ</span><b>Typing test result sheet</b></div>
+        <div class="verdict" id="rs-verdict"></div>
+        <dl class="rs-meta" id="rs-meta"></dl>
+        <div class="tbl"><table class="rs-table" id="rs-table"></table></div>
+        <div id="rs-whywrap" class="note-box"><b>Why not qualified</b><ul id="rs-why"></ul></div>
+        <p class="muted" style="font-size:.85rem">Practice result from punjabexamprep.in. Not an official PSSSB result.</p>
+        <div class="row no-print"><button type="button" class="btn" id="rs-again">Take another test</button><button type="button" class="btn alt" id="rs-print">Print or save as PDF</button><a class="btn alt" href="index.html#progress">See progress</a></div>
+      </div>
+      <div id="rs-parts" class="no-print"></div>
+    </section>
+  </div>
+
+  <div id="ex-shell" class="ex-shell" hidden>
+    <div class="ex-bar"><span class="ex-brand guru">ਅੱਖਰ</span><span id="ex-part" class="ex-part"></span><span id="ex-cand" class="ex-cand"></span><span class="ex-time">Time left <span id="ex-clock" class="clock">10:00</span></span></div>
+    <div id="ex-run" class="ex-body">
+      <div class="ex-src" id="ex-src"></div>
+      <textarea id="ex-input" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Type the passage here"></textarea>
+      <div class="row"><button type="button" class="btn" id="ex-submit">Submit</button><button type="button" class="btn alt" id="ex-kbbtn" hidden>On-screen keyboard</button></div>
+      <div id="ex-kbwrap" hidden><div class="kb-wrap"><div class="kb" id="ex-kb"></div></div></div>
+      <div id="ex-confirm" class="ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="ex-ctitle"><div class="panel"><h3 id="ex-ctitle">Submit this part?</h3><p class="muted">You cannot change it after submitting.</p><div class="row"><button type="button" class="btn" id="ex-yes">Yes, submit</button><button type="button" class="btn alt" id="ex-no">Keep typing</button></div></div></div>
+    </div>
+    <div id="ex-break" class="ex-body ex-break" hidden>
+      <div class="panel"><h2>Part submitted</h2><p id="br-done"></p><p id="br-next"></p><button type="button" class="btn" id="br-start">Start part 2</button></div>
+    </div>
+  </div>
+
+  <h2>What your result means</h2>
+  <ul>
+    <li><b>Gross speed</b> is everything you typed, divided by 5 characters per word and by the minutes in the test.</li>
+    <li><b>Net speed</b> is what is left after each full mistake takes away 5 characters and each half mistake 2.5.</li>
+    <li><b>Accuracy</b> is net characters as a share of gross characters. Punjab government tests usually ask for at least 92%.</li>
+  </ul>
+  <p>Below 15 words per minute, spend your time on the <a href="index.html#learn">lessons</a> rather than on tests. Between 15 and 25, follow the plan in <a href="how-to-increase-punjabi-typing-speed.html">how to increase Punjabi typing speed</a>. Above 25, take full <a href="psssb-typing-test.html">PSSSB mock tests</a> every second day.</p>
+  <h2>Typing on a phone?</h2>
+  <p>Tap <b>On-screen keyboard</b> during the test to type with the INSCRIPT layout on screen. It is useful for learning the layout, but the real test is on a computer, so do most of your practice on a physical keyboard.</p>
+
+<div class="ad-slot" hidden></div>
+
+</main>
+<footer><div class="wrap foot">
+  <nav class="foot-links" aria-label="Site"><a href="about.html">About</a> · <a href="psssb-typing-test.html">PSSSB typing test</a> · <a href="punjabi-typing-test-online.html">Punjabi typing test</a> · <a href="raavi-font-typing-test.html">Raavi font typing test</a> · <a href="raavi-typing-guide.html">Raavi typing guide</a> · <a href="punjab-typing-test-tips.html">Typing test tips</a> · <a href="punjabi-keyboard-layout.html">Keyboard layout chart</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy policy</a> · <a href="terms.html">Terms of use</a></nav>
+  <p>Akhar is an independent practice tool and is not affiliated with PSSSB or any recruitment board. Scoring follows the method published in Punjab typing-test notices; always check your own notice.</p>
+</div></footer>
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/exam.js"></script>
+<script src="js/ads.js"></script>
+</body>
+</html>

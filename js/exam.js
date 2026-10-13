@@ -33,7 +33,7 @@ function passageFor(lang, minutes) {
 
 /* ---------- login ---------- */
 function renderPresets() {
-  const sel = (DB.settings.examPreset && PRESETS.find(p => p.id === DB.settings.examPreset)) ? DB.settings.examPreset : 'psssb';
+  const sel = PRESETS.find(p => p.id === $('#ex-app').dataset.preset) ? $('#ex-app').dataset.preset : 'psssb';
   $('#ex-presets').innerHTML = PRESETS.map(p => `<label class="preset"><input type="radio" name="preset" value="${p.id}"${p.id === sel ? ' checked' : ''}><span><b>${esc(p.name)}</b><small>${esc(p.sub)}</small></span></label>`).join('');
   $('#ex-name').value = DB.settings.cand || '';
 }
@@ -44,7 +44,7 @@ function login(e) {
   $('#ex-name-err').hidden = true;
   const preset = PRESETS.find(p => p.id === $('input[name=preset]:checked').value);
   const roll = $('#ex-roll').value.trim() || String(Math.floor(10000000 + Math.random() * 89999999));
-  DB.settings.cand = name; DB.settings.examPreset = preset.id; save();
+  DB.settings.cand = name; save();
   X = {preset, name, roll, parts: [], partIdx: 0, startedAt: Date.now()};
   renderInstructions();
   screen('instr');
