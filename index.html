@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Free Punjabi typing tutor for the Raavi font and Gurmukhi INSCRIPT keyboard, with lessons, practice passages and a timed test scored the Punjab govt exam way.">
+<title>Akhar Punjabi Typing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700;800&family=Mukta+Mahee:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" data-go="home"><b>ਅੱਖਰ</b><span>Akhar</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#home" data-go="home" data-v="home">Home</a>
+      <a href="#learn" data-go="learn" data-v="learn">Lessons</a>
+      <a href="#practice" data-go="practice" data-v="practice">Practice</a>
+      <a href="#exam" data-go="exam" data-v="exam">Exam test</a>
+      <a href="#keyboard" data-go="keyboard" data-v="keyboard">Keyboard</a>
+      <a href="#progress" data-go="progress" data-v="progress">Progress</a>
+    </nav>
+    <div class="tools">
+      <label class="muted" for="size-sel" style="font-size:.85rem">Text</label>
+      <select id="size-sel" aria-label="Typing text size"><option value="s">Small</option><option value="m">Medium</option><option value="l">Large</option></select>
+      <button type="button" class="ghost" id="theme-btn">Theme: auto</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section id="v-home">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Raavi font · INSCRIPT keyboard</div>
+      <h1>Punjabi typing for the <em>Punjab govt exam</em>, key by key.</h1>
+      <p class="lede">Learn the same Gurmukhi INSCRIPT layout the clerk and typist tests use with Raavi font. Twenty step-by-step lessons, real exam passages, and a timed test scored the way the board scores it. Nothing to install: type on your normal keyboard and Akhar converts it to Punjabi.</p>
+      <div class="row">
+        <button type="button" class="btn" id="h-continue" data-id="1">Start Lesson 1</button>
+        <a class="btn alt" href="#exam" data-go="exam">Take a 10-minute test</a>
+      </div>
+    </div>
+    <div class="demo" aria-hidden="true">
+      <div class="demo-out" id="demo-out"></div>
+      <div class="kb-wrap"><div class="kb" id="demo-kb"></div></div>
+    </div>
+  </div>
+
+  <div class="stats" id="h-stats"></div>
+
+  <div class="paths">
+    <a class="path" href="#learn" data-go="learn"><span class="pa">ਸਬਕ</span><h3>20 lessons</h3><p>Start with ਰ ਕ ਤ ਚ on the home row and add a few keys at a time, through matras, Shift letters, addak, pair bindi and pairi rara.</p></a>
+    <a class="path" href="#practice" data-go="practice"><span class="pa">ਅਭਿਆਸ</span><h3>Practice</h3><p>Twelve exam-style passages, common words, sentences, and a drill built from the keys you miss most.</p></a>
+    <a class="path" href="#exam" data-go="exam"><span class="pa">ਟੈਸਟ</span><h3>Exam test</h3><p>Timed test with full and half mistakes, gross and net speed, accuracy, and a word-by-word check of every error.</p></a>
+  </div>
+
+  <div class="panel rules">
+    <div>
+      <h2>How the typing test is scored</h2>
+      <ul>
+        <li>Punjabi is typed in Unicode Raavi font on the INSCRIPT keyboard. The test runs for 10 minutes.</li>
+        <li>To qualify you need at least <b>30 words per minute</b> and at least <b>92% accuracy</b>.</li>
+        <li><b>Full mistake:</b> a missed word, a wrong word, an extra word, or missing punctuation. A wrong or missing matra, addak or half letter makes the whole word wrong.</li>
+        <li><b>Half mistake:</b> a spacing error, such as two words joined or one word split.</li>
+        <li>Vowels are typed as single keys. ਉ is Shift+G, never ੳ followed by ੁ.</li>
+      </ul>
+    </div>
+    <div class="formula">
+      <span class="eyebrow">Formula used here</span>
+      <code>error chars = mistakes × 5</code>
+      <code>net chars = gross chars − error chars</code>
+      <code>gross WPM = gross chars ÷ 5 ÷ minutes</code>
+      <code>net WPM = net chars ÷ 5 ÷ minutes</code>
+      <code>accuracy = net chars ÷ gross chars × 100</code>
+      <span class="muted" style="font-size:.85rem">Example: 1,650 characters with 6 full and 2 half mistakes in 10 minutes gives 7 mistakes, 35 error characters, gross 33 WPM, net 32.3 WPM and 97.9% accuracy. Always check the rules in your own recruitment notice.</span>
+    </div>
+  </div>
+</section>
+
+<!-- LESSONS -->
+<section id="v-learn" hidden>
+  <div class="h-sec">
+    <div><div class="eyebrow">ਸਬਕ · Lessons</div><h1>Learn the keyboard step by step</h1><p class="lede">Each lesson adds a few keys and drills them with real Punjabi words built only from keys you already know. Reach 90% accuracy to complete a lesson. Every lesson stays open, so you can jump ahead.</p></div>
+    <span class="pill acc" id="learn-count"></span>
+  </div>
+  <div class="lessons" id="lesson-list"></div>
+</section>
+
+<!-- DRILL -->
+<section id="v-drill" hidden>
+  <div class="drill-head">
+    <div><h1 id="d-title"></h1><div class="sub" id="d-sub"></div></div>
+    <div class="drill-tools">
+      <button type="button" class="ghost" id="d-back">← Back</button>
+      <button type="button" class="ghost" id="d-restart">Restart</button>
+      <button type="button" class="ghost" id="d-kbtoggle">Hide keyboard</button>
+      <button type="button" class="ghost" id="d-sound">Error sound: on</button>
+    </div>
+  </div>
+  <p class="tip" id="d-tip"></p>
+  <div id="d-stage" style="display:flex;flex-direction:column;gap:14px">
+    <div class="live">
+      <div><b id="d-wpm">0</b><span>WPM</span></div>
+      <div><b id="d-acc">100%</b><span>Accuracy</span></div>
+      <div><b id="d-err">0</b><span>Errors</span></div>
+      <div><b id="d-time">0:00</b><span>Time</span></div>
+    </div>
+    <div class="bar"><i id="d-bar"></i></div>
+    <div class="typebox" id="d-text" lang="pa" aria-live="off"></div>
+    <div class="hint" id="d-hint"></div>
+    <div id="d-kbwrap" style="display:flex;flex-direction:column;gap:8px">
+      <div class="kb-wrap"><div class="kb" id="d-kb"></div></div>
+      <div class="legend"><span><i class="f0"></i>Little</span><span><i class="f1"></i>Ring</span><span><i class="f2"></i>Middle</span><span><i class="f3"></i>Left index</span><span><i class="f4"></i>Right index</span><span>Start typing on your keyboard, or tap the keys.</span></div>
+    </div>
+  </div>
+  <div class="panel result" id="d-result" hidden>
+    <h2>Result</h2>
+    <div class="grid4">
+      <div class="stat"><span class="s-v" id="r-wpm"></span><span class="s-l">WPM</span></div>
+      <div class="stat"><span class="s-v" id="r-acc"></span><span class="s-l">Accuracy</span></div>
+      <div class="stat"><span class="s-v" id="r-err"></span><span class="s-l">Errors</span></div>
+      <div class="stat"><span class="s-v" id="r-time"></span><span class="s-l">Time</span></div>
+    </div>
+    <p id="r-msg"></p>
+    <div class="row">
+      <button type="button" class="btn" id="r-next">Next lesson</button>
+      <button type="button" class="btn alt" id="r-retry">Try again (Enter)</button>
+      <button type="button" class="btn alt" id="r-back">Back to list</button>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="v-practice" hidden>
+  <div class="h-sec"><div><div class="eyebrow">ਅਭਿਆਸ · Practice</div><h1>Practice with real Punjabi text</h1><p class="lede">Practice mode shows the next key and stops on each mistake, so you build correct habits. Switch to the exam test when you can type a passage above 92% accuracy.</p></div></div>
+  <div class="prac-top">
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px"><h3>Weak keys drill</h3><div class="l-keys" id="weak-keys"></div><button type="button" class="btn" id="pr-weak" style="align-self:flex-start">Practice weak keys</button></div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px"><h3>Common words</h3><p class="muted">45 everyday words in random order, covering every key.</p><button type="button" class="btn alt" id="pr-words" style="align-self:flex-start">Start</button></div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px"><h3>Sentences</h3><p class="muted">Short sentences with danda and commas, the way passages are written.</p><button type="button" class="btn alt" id="pr-sent" style="align-self:flex-start">Start</button></div>
+  </div>
+  <h2 style="font-size:1.35rem">Exam-style passages</h2>
+  <div class="passages" id="passage-list"></div>
+</section>
+
+<!-- EXAM -->
+<section id="v-exam" hidden>
+  <div id="x-setup" style="display:flex;flex-direction:column;gap:24px">
+    <div class="h-sec"><div><div class="eyebrow">ਟੈਸਟ · Exam test</div><h1>Timed typing test</h1><p class="lede">This works like the board's test: the passage is on top, you type below, and there is no help on screen. The timer starts with your first keystroke.</p></div></div>
+    <div class="setup">
+      <div class="panel form">
+        <div class="field"><label for="x-passage">Passage</label><select id="x-passage"></select><small>Longer tests continue into the next passage so you never run out of text.</small></div>
+        <div class="field"><label for="x-dur">Duration</label><select id="x-dur"><option value="2">2 minutes (quick check)</option><option value="5">5 minutes</option><option value="10" selected>10 minutes (exam length)</option><option value="15">15 minutes</option></select></div>
+        <div class="field"><label for="x-target">Qualifying speed (WPM)</label><input type="number" id="x-target" min="10" max="80" value="30"><small>30 for Punjab clerk posts. Change it if your notice asks for another speed.</small></div>
+        <label class="check"><input type="checkbox" id="x-back" checked><span><b>Allow Backspace</b><br><span class="muted">Turn off to practise without corrections.</span></span></label>
+        <label class="check"><input type="checkbox" id="x-hl"><span><b>Highlight the current word</b><br><span class="muted">Off in the real exam. Useful while you learn.</span></span></label>
+        <label class="check"><input type="checkbox" id="x-showkb"><span><b>Show on-screen keyboard</b><br><span class="muted">For phones and tablets. Leave it off at a computer.</span></span></label>
+        <button type="button" class="btn" id="x-start" style="align-self:flex-start">Start test</button>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+        <h3>Before you start</h3>
+        <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+          <li>Type on your normal English keyboard. Akhar maps each key to the INSCRIPT layout, so you do not need to change Windows settings.</li>
+          <li>If the Windows Punjabi keyboard is already on, that works too.</li>
+          <li>Press Space once between words. Extra spaces are ignored, missing ones count as half mistakes.</li>
+          <li>Paste is blocked, just like the exam software.</li>
+          <li>Leaving a word half typed when time runs out counts as a mistake, so finish the word you are on.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="x-run" hidden style="display:flex;flex-direction:column;gap:12px">
+    <div class="examhead"><span class="t" id="x-ptitle"></span><span class="muted" id="x-status" style="color:inherit;opacity:.75;font-size:.9rem"></span><span class="clock" id="x-clock">10:00</span></div>
+    <div class="src" id="x-src" lang="pa"></div>
+    <textarea id="x-input" lang="pa" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Type the passage here" placeholder="ਇੱਥੇ ਟਾਈਪ ਕਰੋ · type here"></textarea>
+    <div class="row"><button type="button" class="btn" id="x-submit">Submit test</button><button type="button" class="btn alt" id="x-quit">Cancel</button></div>
+    <div id="x-kbwrap" hidden><div class="kb-wrap"><div class="kb" id="x-kb"></div></div></div>
+  </div>
+
+  <div id="x-result" hidden style="display:flex;flex-direction:column;gap:18px">
+    <div><div class="eyebrow">Result</div><div class="verdict" id="xr-verdict"></div><p class="muted" id="xr-line"></p></div>
+    <div class="cells" id="xr-grid"></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <h3>Word by word</h3>
+      <div class="dlegend"><span><i style="background:var(--bad-soft);border:1px solid var(--bad)"></i>Wrong word (yours, then the correct one)</span><span><i style="border:1px dashed var(--muted)"></i>Missed word</span><span><i style="background:var(--gold-soft);border:1px solid var(--gold)"></i>Extra word</span><span><i style="background:var(--blue-soft);border:1px solid var(--blue)"></i>Spacing error (half)</span></div>
+      <div class="diff" id="xr-diff" lang="pa"></div>
+    </div>
+    <div class="row"><button type="button" class="btn" id="xr-again">New test</button><a class="btn alt" href="#progress" data-go="progress">See progress</a></div>
+  </div>
+</section>
+
+<!-- KEYBOARD -->
+<section id="v-keyboard" hidden>
+  <div class="h-sec"><div><div class="eyebrow">ਕੀਬੋਰਡ · Layout chart</div><h1>Gurmukhi INSCRIPT keyboard</h1><p class="lede">Each key shows its English letter (top right), the Punjabi character without Shift (large) and with Shift (top left). Colours show which finger presses the key.</p></div></div>
+  <div class="kb-wrap"><div class="kb" id="k-kb"></div></div>
+  <div class="legend"><span><i class="f0"></i>Little</span><span><i class="f1"></i>Ring</span><span><i class="f2"></i>Middle</span><span><i class="f3"></i>Left index</span><span><i class="f4"></i>Right index</span><span><i class="f5"></i>Right middle</span><span><i class="f6"></i>Right ring</span><span><i class="f7"></i>Right little</span></div>
+  <div class="two">
+    <div class="panel tbl">
+      <h3 style="margin-bottom:8px">Tricky combinations</h3>
+      <table class="combos"><thead><tr><th>Type</th><th>Keys</th><th>Note</th></tr></thead><tbody>
+        <tr><td class="g">ਕਿ</td><td><kbd>K</kbd> <kbd>F</kbd></td><td>Sihari is drawn first but typed after the letter.</td></tr>
+        <tr><td class="g">ਪ੍ਰ</td><td><kbd>H</kbd> <kbd>D</kbd> <kbd>J</kbd> or <kbd>H</kbd> <kbd>Shift+3</kbd></td><td>Pairi rara: letter, halant, ਰ.</td></tr>
+        <tr><td class="g">ਪੜ੍ਹ</td><td><kbd>H</kbd> <kbd>Shift+J</kbd> <kbd>D</kbd> <kbd>U</kbd></td><td>Pairi haha. <kbd>Shift+`</kbd> types ੍ਹ in one go.</td></tr>
+        <tr><td class="g">ਪੱਕਾ</td><td><kbd>H</kbd> <kbd>Shift+4</kbd> <kbd>K</kbd> <kbd>E</kbd></td><td>Addak comes before the letter it doubles.</td></tr>
+        <tr><td class="g">ਪੰਜ</td><td><kbd>H</kbd> <kbd>X</kbd> <kbd>P</kbd></td><td>Tippi with mukta, ਿ, ੁ, ੂ.</td></tr>
+        <tr><td class="g">ਮਾਂ</td><td><kbd>C</kbd> <kbd>E</kbd> <kbd>Shift+X</kbd></td><td>Bindi after the vowel sign.</td></tr>
+        <tr><td class="g">ਸ਼</td><td><kbd>Shift+M</kbd></td><td>Its own key. ਲ਼ is <kbd>Shift+N</kbd>.</td></tr>
+        <tr><td class="g">ਜ਼ ਫ਼ ਖ਼ ਗ਼</td><td><kbd>P</kbd> <kbd>]</kbd> …</td><td>Letter first, then pair bindi on <kbd>]</kbd>.</td></tr>
+        <tr><td class="g">ਉ ਊ ਓ</td><td><kbd>Shift+G</kbd> <kbd>Shift+T</kbd> <kbd>Shift+A</kbd></td><td>Full vowels are single keys. Never type ੳ + matra.</td></tr>
+        <tr><td class="g">ਇ ਈ ਏ ਐ</td><td><kbd>Shift+F</kbd> <kbd>Shift+R</kbd> <kbd>Shift+S</kbd> <kbd>Shift+W</kbd></td><td>Same rule: one key each.</td></tr>
+        <tr><td class="g">ਅ ਆ ਔ</td><td><kbd>Shift+D</kbd> <kbd>Shift+E</kbd> <kbd>Shift+Q</kbd></td><td></td></tr>
+        <tr><td class="g">।</td><td><kbd>Shift+.</kbd></td><td>Danda, no space before it.</td></tr>
+      </tbody></table>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+      <h3>Typing on your own computer</h3>
+      <p>In Akhar you can type straight away: every key on an English keyboard is converted to the INSCRIPT character shown in the chart.</p>
+      <p>To type Punjabi in other programs, as in the exam hall, add the Punjabi language in Windows Settings under Time &amp; language. Its default keyboard is this same INSCRIPT layout, and Raavi font comes with Windows. Switch with <span class="kbd">Win + Space</span>.</p>
+      <p class="muted">Akhar shows text in Raavi when your computer has it, and in Noto Sans Gurmukhi on phones and other systems. The characters are the same Unicode in both.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="v-progress" hidden>
+  <div class="h-sec"><div><div class="eyebrow">ਤਰੱਕੀ · Progress</div><h1>Your progress</h1><p class="lede">Saved in this browser on this device.</p></div><button type="button" class="ghost" id="p-reset">Reset all progress</button></div>
+  <div class="stats" id="p-stats"></div>
+  <div class="panel"><h3 style="margin-bottom:8px">Net speed in exam tests</h3><svg class="chart" id="p-chart" viewBox="0 0 600 220" role="img" aria-label="Net words per minute over recent tests"></svg></div>
+  <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+    <div class="h-sec"><h3>Keys you miss most</h3><button type="button" class="btn alt" id="p-weakbtn">Practice weak keys</button></div>
+    <p class="muted">Redder keys have a higher error rate across lessons and practice.</p>
+    <div class="kb-wrap heat"><div class="kb" id="p-kb"></div></div>
+  </div>
+  <div class="panel tbl"><h3 style="margin-bottom:8px">Test history</h3><div id="p-table"></div></div>
+</section>
+
+</main>
+<footer><div class="wrap">Akhar is an independent practice tool and is not affiliated with any recruitment board. Scoring follows the method published in Punjab typing-test notices; always check your own notice.</div></footer>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
