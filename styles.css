@@ -108,6 +108,20 @@ section{display:flex;flex-direction:column;gap:24px}
 .kc-all{font-size:.85rem;color:var(--muted)}
 .l-state{grid-column:2}
 
+/* stages */
+.stages{display:flex;flex-direction:column;gap:30px}
+.stage{display:flex;flex-direction:column;gap:12px}
+.stage-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.stage-h h2{font-size:1.3rem}
+.stage-n{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--accent)}
+.stage-pa{color:var(--muted)}
+.stage-h .pill{margin-left:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.step{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:var(--surface-2);color:var(--muted);font-variant-numeric:tabular-nums}
+.step.done{background:var(--good-soft);color:var(--good)}
+.step.on{background:var(--accent);color:var(--accent-ink)}
+.step-name{margin-left:6px;font-size:.9rem;color:var(--muted);font-weight:600}
+
 /* drill */
 .drill-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:start}
 .drill-head h1{font-size:clamp(1.3rem,2.6vw,1.75rem)}

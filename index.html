@@ -40,7 +40,7 @@
     <div>
       <div class="eyebrow">Raavi font · INSCRIPT keyboard</div>
       <h1>Punjabi typing for the <em>Punjab govt exam</em>, key by key.</h1>
-      <p class="lede">Learn the same Gurmukhi INSCRIPT layout the clerk and typist tests use with Raavi font. Twenty step-by-step lessons, real exam passages, and a timed test scored the way the board scores it. Nothing to install: type on your normal keyboard and Akhar converts it to Punjabi.</p>
+      <p class="lede">Learn the same Gurmukhi INSCRIPT layout the clerk and typist tests use with Raavi font. 57 step-by-step lessons in seven stages, real exam passages, and a timed test scored the way the board scores it. Nothing to install: type on your normal keyboard and Akhar converts it to Punjabi.</p>
       <div class="row">
         <button type="button" class="btn" id="h-continue" data-id="1">Start Lesson 1</button>
         <a class="btn alt" href="#exam" data-go="exam">Take a 10-minute test</a>
@@ -55,7 +55,7 @@
   <div class="stats" id="h-stats"></div>
 
   <div class="paths">
-    <a class="path" href="#learn" data-go="learn"><span class="pa">ਸਬਕ</span><h3>20 lessons</h3><p>Start with ਰ ਕ ਤ ਚ on the home row and add a few keys at a time, through matras, Shift letters, addak, pair bindi and pairi rara.</p></a>
+    <a class="path" href="#learn" data-go="learn"><span class="pa">ਸਬਕ</span><h3>57 lessons</h3><p>Seven stages, from ਕ ਤ ਰ ਚ on the home row through matras, Shift letters, addak, pair bindi and pairi rara, then word lists and full exam paragraphs. Each lesson has six to eight exercises and takes about 5 to 10 minutes.</p></a>
     <a class="path" href="#practice" data-go="practice"><span class="pa">ਅਭਿਆਸ</span><h3>Practice</h3><p>Twelve exam-style passages, common words, sentences, and a drill built from the keys you miss most.</p></a>
     <a class="path" href="#exam" data-go="exam"><span class="pa">ਟੈਸਟ</span><h3>Exam test</h3><p>Timed test with full and half mistakes, gross and net speed, accuracy, and a word-by-word check of every error.</p></a>
   </div>
@@ -86,10 +86,10 @@
 <!-- LESSONS -->
 <section id="v-learn" hidden>
   <div class="h-sec">
-    <div><div class="eyebrow">ਸਬਕ · Lessons</div><h1>Learn the keyboard step by step</h1><p class="lede">Each lesson adds a few keys and drills them with real Punjabi words built only from keys you already know. Reach 90% accuracy to complete a lesson. Every lesson stays open, so you can jump ahead.</p></div>
+    <div><div class="eyebrow">ਸਬਕ · Lessons</div><h1>Learn the keyboard step by step</h1><p class="lede">Each lesson adds a few keys and runs six to eight exercises: the new keys alone, mixed with keys you know, then real Punjabi words and sentences built only from keys you have learned. Reach 90% accuracy to complete a lesson. Every lesson stays open, so you can jump ahead.</p></div>
     <span class="pill acc" id="learn-count"></span>
   </div>
-  <div class="lessons" id="lesson-list"></div>
+  <div class="stages" id="lesson-list"></div>
 </section>
 
 <!-- DRILL -->
@@ -112,6 +112,7 @@
       <div><b id="d-time">0:00</b><span>Time</span></div>
     </div>
     <div class="bar"><i id="d-bar"></i></div>
+    <div class="steps" id="d-steps" hidden></div>
     <div class="typebox" id="d-text" lang="pa" aria-live="off"></div>
     <div class="hint" id="d-hint"></div>
     <div id="d-kbwrap" style="display:flex;flex-direction:column;gap:8px">

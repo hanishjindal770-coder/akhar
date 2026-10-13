@@ -62,7 +62,8 @@ function keyLabel(ch) {
 /* ================= storage ================= */
 const KEY = 'akhar.v1';
 function loadDB() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
-const DB = Object.assign({lessons: {}, tests: [], weak: {}, seen: {}, settings: {}}, loadDB());
+const DB = Object.assign({lp: {}, tests: [], weak: {}, seen: {}, settings: {}}, loadDB());
+delete DB.lessons; // numbering from the first version no longer matches
 DB.settings = Object.assign({sound: true, kb: true, theme: 'system', target: 30, size: 'm'}, DB.settings);
 let saveT = 0;
 function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }, 150); }
@@ -147,86 +148,133 @@ function go(v, push = true) {
 window.addEventListener('hashchange', () => go(location.hash.slice(1), false));
 
 /* ================= lesson generation ================= */
+// Lesson progress moved to its own key when lessons were renumbered.
+function LP(id) { return DB.lp[id] || {}; }
 function learnedUpTo(id) {
   const s = new Set([' ']);
-  LESSONS.forEach(l => { if (l.id <= id) l.keys.forEach(k => s.add(canon(k))); });
+  LESSONS.forEach(l => { if (l.id <= id && l.keys) l.keys.forEach(k => s.add(canon(k))); });
   return s;
 }
-function unitFor(r, c, cons) {
+function unitFor(r, c, cons, focus) {
   const base = cons.length ? pick(r, cons) : 'ਕ';
   if (c === '਼') return pick(r, ['ਖ', 'ਗ', 'ਜ', 'ਫ']) + c;
-  if (c === '੍') return base + c + pick(r, ['ਰ', 'ਰ', 'ਹ', 'ਵ']);
-  if (c === 'ੱ') { const b2 = pick(r, cons.filter(x => x !== 'ਹ')) || 'ਕ'; return base + c + b2 + 'ਾ'; }
+  if (c === '੍') return base + (focus || (c + pick(r, ['ਰ', 'ਰ', 'ਹ', 'ਵ']))) + (r() < 0.4 ? 'ਾ' : '');
+  if (c === 'ੱ') { const b2 = pick(r, cons.filter(x => x !== 'ਹ')) || 'ਕ'; return base + c + b2 + pick(r, ['ਾ', 'ੀ', 'ੇ', '']); }
   if (c === 'ਂ') return base + pick(r, ['ਾ', 'ੀ', 'ੇ', 'ੈ', 'ੋ']) + c;
   if (c === 'ੰ') return base + pick(r, ['', 'ਿ', 'ੁ', 'ੂ']) + c;
+  if (c === ',' || c === '।') return base + pick(r, ['ਾ', '', 'ੀ', 'ੇ']) + pick(r, cons) + c;
   if (isMark(c)) return base + c;
   return c;
 }
+// Lines of ~N groups so each exercise is a few lines long.
+const line = (n, f) => Array.from({length: n}, f).join(' ');
+function cycle(r, arr, n) { const out = []; let pool = []; while (out.length < n && arr.length) { if (!pool.length) pool = shuffle(r, arr); out.push(pool.pop()); } return out; }
+function sentenceChunks(text, per) {
+  const s = text.match(/[^।]+।?/g).map(x => x.trim()).filter(Boolean);
+  const out = []; for (let i = 0; i < s.length; i += per) out.push(s.slice(i, i + per).join(' '));
+  return out;
+}
 function genLesson(lesson, seed) {
   const r = rng(seed * 7919 + lesson.id);
-  if (lesson.special === 'words') {
-    const pool = shuffle(r, [...new Set(WORDS)]);
-    return [pool.slice(0, 14).join(' '), pool.slice(14, 28).join(' '), pool.slice(28, 40).join(' ')].join(' ');
+  const ex = (name, text) => ({name, text});
+  if (lesson.kind === 'words') {
+    const list = [...new Set(WORD_LISTS[lesson.list].split(/\s+/).filter(Boolean))];
+    const all = cycle(r, list, 8 * 25);
+    return [0, 1, 2, 3, 4, 5, 6, 7].map(i => ex(`Words ${i + 1}`, all.slice(i * 25, i * 25 + 25).join(' ')));
   }
-  if (lesson.special === 'sentences') return shuffle(r, SENTENCES).slice(0, 5).join(' ');
+  if (lesson.kind === 'sentences') {
+    const list = lesson.list === 'OFFICE_SENTENCES' ? OFFICE_SENTENCES : SENTENCES;
+    const all = cycle(r, list, 24);
+    return [0, 1, 2, 3, 4, 5, 6, 7].map(i => ex(`Sentences ${i + 1}`, all.slice(i * 3, i * 3 + 3).join(' ')));
+  }
+  if (lesson.kind === 'para') {
+    const p = PASSAGES.find(x => x.id === lesson.passage);
+    return sentenceChunks(p.x, 2).map((t, i) => ex(`Part ${i + 1}`, t));
+  }
+  if (lesson.kind === 'digits') {
+    const d = lesson.keys;
+    const grp = n => line(26, () => Array.from({length: n}, () => pick(r, d)).join(''));
+    const nums = ['ਸਾਲ', 'ਰੁਪਏ', 'ਦਿਨ', 'ਮਿੰਟ', 'ਨੰਬਰ', 'ਮਿਤੀ', 'ਘੰਟੇ', 'ਕਿਲੋ'];
+    return [
+      ex('Each digit', d.map(c => line(4, () => c + c)).join(' ')),
+      ex('Pairs', grp(2)), ex('Threes', grp(3)), ex('Fours', grp(4)),
+      ex('Numbers with words', line(22, () => Array.from({length: 1 + Math.floor(r() * 3)}, () => pick(r, d)).join('') + ' ' + pick(r, nums))),
+      ex('Dates', line(16, () => `${pick(r, d)}${pick(r, d)}.${pick(r, d)}${pick(r, d)}.੨੦${pick(r, d)}${pick(r, d)}`))
+    ];
+  }
   const learned = learnedUpTo(lesson.id);
   const fresh = lesson.keys.map(canon);
   const cons = [...learned].filter(isCons).filter(c => c.length === 1);
-  const parts = [];
-  if (lesson.id === 18) {
-    for (let i = 0; i < 14; i++) { let w = ''; const n = 2 + Math.floor(r() * 3); for (let j = 0; j < n; j++) w += pick(r, fresh); parts.push(w); }
-    return fresh.join(' ') + ' ' + parts.join(' ');
-  }
-  // 1) each new key three times
-  fresh.forEach(c => { for (let i = 0; i < 3; i++) parts.push(/[,\u0964]/.test(c) ? pick(r, cons) + pick(r, ['\u0A3E', '', '\u0A40']) + pick(r, cons) + c : unitFor(r, c, cons)); });
-  // 2) short syllable groups mixing the new keys with ones already learned
-  const MATRAS = ['\u0A3E','\u0A3F','\u0A40','\u0A41','\u0A42','\u0A47','\u0A48','\u0A4B','\u0A4C'].filter(c => learned.has(c));
-  const letters = [...learned].filter(k => k !== ' ' && !isMark(k) && !/[,\u0964]/.test(k));
+  const MATRAS = ['ਾ', 'ਿ', 'ੀ', 'ੁ', 'ੂ', 'ੇ', 'ੈ', 'ੋ', 'ੌ'].filter(c => learned.has(c));
+  const letters = [...learned].filter(k => k !== ' ' && !isMark(k) && !/[,।]/.test(k) && !/[੦-੯]/.test(k));
   const syl = c => {
-    if (c === ',' || c === '\u0964') return syl(pick(r, letters.length ? letters : ['ਕ'])) + c;
-    if (isMark(c)) return unitFor(r, c, cons);
+    if (c === ',' || c === '।' || isMark(c)) return unitFor(r, c, cons, lesson.focus);
     return c + (isCons(c) && MATRAS.length && r() < 0.45 ? pick(r, MATRAS) : '');
   };
-  for (let i = 0; i < 10; i++) {
-    const n = 2 + Math.floor(r() * 2); const featured = Math.floor(r() * n); let w = '';
-    for (let j = 0; j < n; j++) {
-      const c = j === featured ? pick(r, fresh) : pick(r, letters.length ? letters : fresh);
-      const part = syl(c);
-      w += (j < n - 1 && /[,\u0964]$/.test(part)) ? part.slice(0, -1) : part;
-    }
-    parts.push(w);
+  const group = (featured, n) => { const f = Math.floor(r() * n); let w = ''; for (let j = 0; j < n; j++) { let part = syl(j === f ? pick(r, featured) : pick(r, letters.length ? letters : featured)); if (j < n - 1) part = part.replace(/[,।]$/, ''); w += part; } return w; };
+  const usable = w => [...canon(w)].every(c => learned.has(c));
+  const focusOk = w => !lesson.focus || canon(w).includes(lesson.focus);
+  const withFresh = [...new Set(WORDS.filter(w => usable(w) && focusOk(w) && [...canon(w)].some(c => fresh.includes(c))))];
+  const anyLearned = [...new Set(WORDS.filter(usable))];
+  const sents = [...SENTENCES, ...OFFICE_SENTENCES].filter(s => [...canon(s)].every(c => learned.has(c)) && [...canon(s)].some(c => fresh.includes(c)));
+  const words = (pool, n) => cycle(r, pool, n).join(' ');
+  const out = [];
+  if (lesson.kind === 'keys') {
+    out.push(ex('Meet the new keys', fresh.map(c => line(fresh.length > 2 ? 8 : 12, () => { const u = unitFor(r, c, cons, lesson.focus); return isMark(c) || /[,।]/.test(c) ? u : u + u; })).join(' ')));
+    out.push(ex('New keys together', line(30, () => group(fresh, 1 + Math.floor(r() * 2)).replace(/^(.)$/, '$1$1'))));
+  } else {
+    out.push(ex('Warm up', line(30, () => group(fresh, 2))));
   }
-  // 3) real words using only learned keys and at least one new key
-  const ok = w => { const cps = [...canon(w)]; return cps.every(c => learned.has(c)) && cps.some(c => fresh.includes(c)); };
-  let words = [...new Set(WORDS.filter(ok))];
-  if (lesson.id === 9) words = shuffle(r, SENTENCES.filter(s => [...canon(s)].every(c => learned.has(c) || c === ' '))).slice(0, 2);
-  if (words.length) { const ws = shuffle(r, words); for (let i = 0; i < Math.min(18, Math.max(8, ws.length)); i++) parts.push(ws[i % ws.length]); }
-  return parts.join(' ');
+  out.push(ex('Mix with known keys', line(26, () => group(fresh, 2 + Math.floor(r() * 2)))));
+  out.push(ex('Mix again', line(26, () => group(fresh, 2 + Math.floor(r() * 2)))));
+  if (withFresh.length >= 4) {
+    out.push(ex('Real words', words(withFresh, 28)));
+    out.push(ex('More words', words(withFresh, 28)));
+    if (withFresh.length >= 8) out.push(ex('Even more words', words(withFresh, 28)));
+  } else {
+    out.push(ex('Longer groups', line(22, () => group(fresh, 3 + Math.floor(r() * 2)))));
+  }
+  if (sents.length >= 2) out.push(ex('Sentences', cycle(r, sents, 5).join(' ')));
+  else if (anyLearned.length >= 10) out.push(ex('Everything so far', words([...withFresh, ...anyLearned], 30)));
+  else out.push(ex('Final drill', line(26, () => group(fresh, 2 + Math.floor(r() * 2)))));
+  return out;
 }
 
 /* ================= drill runner ================= */
+// A drill is a list of exercises typed one after another; stats add up across them.
 let D = null;
 function startDrill(cfg) {
   stopDrillTimer();
-  const text = canon(cfg.text).replace(/\s+/g, ' ').trim();
-  const cps = [...text];
-  const cl = clusters(cps);
-  const clusterOf = new Int32Array(cps.length);
-  cl.forEach(([a, b], i) => { for (let k = a; k < b; k++) clusterOf[k] = i; });
-  D = Object.assign({}, cfg, {cps, cl, clusterOf, pos: 0, errors: 0, correct: 0, start: 0, errCl: new Set(), done: false, timer: 0});
+  const exercises = cfg.exercises || [{name: '', text: cfg.text}];
+  D = Object.assign({}, cfg, {exercises, ex: 0, errors: 0, correct: 0, ms: 0, start: 0, done: false, timer: 0, chars: 0});
   $('#d-title').textContent = cfg.title;
   $('#d-sub').textContent = cfg.sub || '';
   $('#d-tip').innerHTML = cfg.tip ? esc(cfg.tip) : '';
   $('#d-tip').hidden = !cfg.tip;
-  const box = $('#d-text');
-  box.innerHTML = cl.map(([a, b], i) => `<span class="ch${cps[a] === ' ' ? ' sp' : ''}">${esc(cps.slice(a, b).join(''))}</span>`).join('');
-  D.spans = [...box.children];
-  box.scrollTop = 0;
   $('#d-result').hidden = true;
   $('#d-stage').hidden = false;
+  loadExercise(0);
+  go('drill');
+}
+function loadExercise(i) {
+  if (D.start) { D.ms += performance.now() - D.start; D.start = 0; }
+  stopDrillTimer();
+  D.ex = i;
+  const text = canon(D.exercises[i].text).replace(/\s+/g, ' ').trim();
+  const cps = [...text];
+  const cl = clusters(cps);
+  const clusterOf = new Int32Array(cps.length);
+  cl.forEach(([a, b], k) => { for (let j = a; j < b; j++) clusterOf[j] = k; });
+  Object.assign(D, {cps, cl, clusterOf, pos: 0, errCl: new Set()});
+  const box = $('#d-text');
+  box.innerHTML = cl.map(([a, b]) => `<span class="ch${cps[a] === ' ' ? ' sp' : ''}">${esc(cps.slice(a, b).join(''))}</span>`).join('');
+  D.spans = [...box.children];
+  box.scrollTop = 0;
+  const n = D.exercises.length;
+  $('#d-steps').hidden = n < 2;
+  $('#d-steps').innerHTML = n < 2 ? '' : D.exercises.map((e, k) => `<span class="step${k < i ? ' done' : ''}${k === i ? ' on' : ''}" title="${esc(e.name)}">${k + 1}</span>`).join('') + `<span class="step-name">Exercise ${i + 1} of ${n} · ${esc(D.exercises[i].name)}</span>`;
   paintRange(0, 0);
   updateHint(); updateLive();
-  go('drill');
 }
 function clState(i) {
   const [a, b] = D.cl[i];
@@ -247,7 +295,7 @@ function paintRange(i0, i1) {
 }
 function updateHint() {
   const kb = $('#d-kb');
-  if (!D || D.pos >= D.cps.length) { kbClear(kb, 'next'); $('#d-hint').innerHTML = ''; return; }
+  if (!D || D.done || D.pos >= D.cps.length) { kbClear(kb, 'next'); $('#d-hint').innerHTML = ''; return; }
   const ch = D.cps[D.pos];
   const r = kbNext(kb, ch);
   let html = `<span class="hint-ch guru">${ch === ' ' ? '␣' : esc(showMark(ch))}</span>`;
@@ -255,7 +303,7 @@ function updateHint() {
   if (ch === 'ਿ') html += `<span class="hint-note">Sihari shows before the letter but is typed after it.</span>`;
   $('#d-hint').innerHTML = html;
 }
-function elapsedMin() { return D && D.start ? (performance.now() - D.start) / 60000 : 0; }
+function elapsedMin() { return D ? (D.ms + (D.start ? performance.now() - D.start : 0)) / 60000 : 0; }
 function updateLive() {
   if (!D) return;
   const m = elapsedMin();
@@ -266,12 +314,13 @@ function updateLive() {
   $('#d-acc').textContent = acc.toFixed(0) + '%';
   $('#d-err').textContent = D.errors;
   $('#d-time').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-  $('#d-bar').style.width = (100 * D.pos / D.cps.length).toFixed(1) + '%';
+  const total = D.exercises.length;
+  $('#d-bar').style.width = (100 * (D.ex + D.pos / D.cps.length) / total).toFixed(1) + '%';
 }
 function stopDrillTimer() { if (D && D.timer) { clearInterval(D.timer); D.timer = 0; } }
 function drillInput(ch, code) {
   if (!D || D.done) return;
-  if (!D.start) { D.start = performance.now(); D.timer = setInterval(updateLive, 500); }
+  if (!D.start) { D.start = performance.now(); if (!D.timer) D.timer = setInterval(updateLive, 500); }
   const exp = D.cps[D.pos];
   const seq = [...canon(ch)];
   const ok = seq.every((c, k) => D.cps[D.pos + k] === c);
@@ -279,7 +328,7 @@ function drillInput(ch, code) {
   const kb = $('#d-kb');
   if (ok) {
     const c0 = D.clusterOf[D.pos];
-    D.pos += seq.length; D.correct += seq.length;
+    D.pos += seq.length; D.correct += seq.length; D.chars += seq.length;
     const c1 = D.clusterOf[Math.min(D.pos, D.cps.length - 1)];
     paintRange(c0, c1);
     if (code) kbFlash(kb, code, 'hit');
@@ -292,18 +341,22 @@ function drillInput(ch, code) {
     beep();
   }
   save();
-  if (D.pos >= D.cps.length) finishDrill(); else { updateHint(); updateLive(); }
+  if (D.pos >= D.cps.length) {
+    if (D.ex + 1 < D.exercises.length) loadExercise(D.ex + 1);
+    else finishDrill();
+  } else { updateHint(); updateLive(); }
 }
 function finishDrill() {
+  if (D.start) { D.ms += performance.now() - D.start; D.start = 0; }
   D.done = true; stopDrillTimer(); updateLive(); updateHint();
   const m = Math.max(elapsedMin(), 1 / 60);
-  const wpm = (D.cps.length / 5) / m;
+  const wpm = (D.chars / 5) / m;
   const acc = 100 * D.correct / (D.correct + D.errors);
   let msg = '', next = null;
   if (D.kind === 'lesson') {
-    const prev = DB.lessons[D.lessonId] || {};
+    const prev = LP(D.lessonId);
     const passed = acc >= 90;
-    DB.lessons[D.lessonId] = {done: prev.done || passed, wpm: Math.max(prev.wpm || 0, passed ? wpm : 0), acc: Math.max(prev.acc || 0, acc), tries: (prev.tries || 0) + 1};
+    DB.lp[D.lessonId] = {done: prev.done || passed, wpm: Math.max(prev.wpm || 0, passed ? wpm : 0), acc: Math.max(prev.acc || 0, acc), tries: (prev.tries || 0) + 1};
     save();
     msg = passed ? 'Lesson complete. Accuracy is above 90%, so the next lesson is ready.' : 'Aim for 90% accuracy to complete this lesson. Slow down and try again.';
     if (passed) next = LESSONS.find(l => l.id === D.lessonId + 1);
@@ -313,7 +366,8 @@ function finishDrill() {
   $('#r-wpm').textContent = Math.round(wpm);
   $('#r-acc').textContent = acc.toFixed(1) + '%';
   $('#r-err').textContent = D.errors;
-  $('#r-time').textContent = (m * 60).toFixed(0) + 's';
+  const s = Math.round(m * 60);
+  $('#r-time').textContent = s >= 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : s + 's';
   $('#r-msg').textContent = msg;
   $('#r-next').hidden = !next;
   $('#r-next').dataset.id = next ? next.id : '';
@@ -322,29 +376,35 @@ function finishDrill() {
 }
 function startLesson(id, seedBump = 0) {
   const l = LESSONS.find(x => x.id === id); if (!l) return;
-  const tries = (DB.lessons[id] && DB.lessons[id].tries) || 0;
-  startDrill({kind: 'lesson', lessonId: id, title: `Lesson ${id} · ${l.t}`, sub: l.pa, tip: l.tip, text: genLesson(l, tries + seedBump + 1)});
+  const tries = LP(id).tries || 0;
+  const ex = genLesson(l, tries + seedBump + 1);
+  startDrill({kind: 'lesson', lessonId: id, title: `Lesson ${id} · ${l.t}`, sub: l.pa, tip: l.tip, exercises: ex});
 }
 function retryDrill() {
   if (!D) return;
   if (D.kind === 'lesson') return startLesson(D.lessonId, Math.floor(Math.random() * 1000));
-  if (D.regen) return startDrill(Object.assign({}, D, {text: D.regen()}));
-  startDrill({kind: D.kind, title: D.title, sub: D.sub, tip: D.tip, text: D.cps.join(''), regen: D.regen});
+  if (D.regen) return startDrill(Object.assign({}, D, {exercises: null, text: D.regen()}));
+  startDrill({kind: D.kind, title: D.title, sub: D.sub, tip: D.tip, exercises: D.exercises});
 }
 
 /* ================= lists ================= */
 function renderLessons() {
-  const nextId = (LESSONS.find(l => !(DB.lessons[l.id] && DB.lessons[l.id].done)) || {}).id;
-  $('#lesson-list').innerHTML = LESSONS.map(l => {
-    const p = DB.lessons[l.id] || {};
-    const keys = l.keys.length ? l.keys.map(k => `<span class="kc guru">${esc(showMark(k))}</span>`).join('') : `<span class="kc-all">All keys</span>`;
-    const state = p.done ? `<span class="pill good">Done · ${Math.round(p.wpm)} WPM</span>` : (l.id === nextId ? `<span class="pill acc">Up next</span>` : (p.tries ? `<span class="pill">Best ${Math.round(p.acc)}%</span>` : ''));
-    return `<button type="button" class="lesson${p.done ? ' is-done' : ''}${l.id === nextId ? ' is-next' : ''}" data-id="${l.id}">
+  const nextId = (LESSONS.find(l => !LP(l.id).done) || {}).id;
+  $('#lesson-list').innerHTML = STAGES.map((st, si) => {
+    const ls = LESSONS.filter(l => l.stage === st.id);
+    const doneN = ls.filter(l => LP(l.id).done).length;
+    return `<div class="stage"><div class="stage-h"><span class="stage-n">Stage ${si + 1}</span><h2>${esc(st.t)}</h2><span class="guru stage-pa">${esc(st.pa)}</span><span class="pill${doneN === ls.length ? ' good' : ''}">${doneN}/${ls.length}</span></div><div class="lessons">${ls.map(l => {
+      const p = LP(l.id);
+      const keys = l.kind === 'keys' || l.kind === 'review' || l.kind === 'digits' ? l.keys.slice(0, 10).map(k => `<span class="kc guru">${esc(showMark(k))}</span>`).join('') : `<span class="kc-all">${l.kind === 'words' ? 'Word list' : l.kind === 'para' ? 'Exam passage' : 'Sentences'}</span>`;
+      const tag = l.kind === 'review' ? '<span class="pill">Review</span> ' : '';
+      const state = p.done ? `<span class="pill good">Done · ${Math.round(p.wpm)} WPM</span>` : (l.id === nextId ? `<span class="pill acc">Up next</span>` : (p.tries ? `<span class="pill">Best ${Math.round(p.acc)}%</span>` : ''));
+      return `<button type="button" class="lesson${p.done ? ' is-done' : ''}${l.id === nextId ? ' is-next' : ''}" data-id="${l.id}">
       <span class="l-num">${l.id}</span>
       <span class="l-body"><span class="l-t">${esc(l.t)}</span><span class="l-pa guru">${esc(l.pa)}</span><span class="l-keys">${keys}</span></span>
-      <span class="l-state">${state}</span></button>`;
+      <span class="l-state">${tag}${state}</span></button>`;
+    }).join('')}</div></div>`;
   }).join('');
-  const done = LESSONS.filter(l => DB.lessons[l.id] && DB.lessons[l.id].done).length;
+  const done = LESSONS.filter(l => LP(l.id).done).length;
   $('#learn-count').textContent = `${done} of ${LESSONS.length} complete`;
 }
 function weakList() {
@@ -524,12 +584,12 @@ function stats() {
   const best = t.length ? Math.max(...t.map(x => x.n)) : null;
   const last5 = t.slice(-5);
   const acc = last5.length ? last5.reduce((s, x) => s + x.a, 0) / last5.length : null;
-  const done = LESSONS.filter(l => DB.lessons[l.id] && DB.lessons[l.id].done).length;
+  const done = LESSONS.filter(l => LP(l.id).done).length;
   return {tests: t.length, best, acc, done};
 }
 function renderHome() {
   const s = stats();
-  const next = LESSONS.find(l => !(DB.lessons[l.id] && DB.lessons[l.id].done)) || LESSONS[LESSONS.length - 1];
+  const next = LESSONS.find(l => !LP(l.id).done) || LESSONS[LESSONS.length - 1];
   $('#h-continue').textContent = s.done ? `Continue: Lesson ${next.id}` : 'Start Lesson 1';
   $('#h-continue').dataset.id = next.id;
   $('#h-stats').innerHTML = [
@@ -675,7 +735,7 @@ function init() {
   let armed = false;
   $('#p-reset').addEventListener('click', e => {
     if (!armed) { armed = true; e.currentTarget.textContent = 'Click again to erase everything'; e.currentTarget.classList.add('danger'); setTimeout(() => { armed = false; $('#p-reset').textContent = 'Reset all progress'; $('#p-reset').classList.remove('danger'); }, 4000); return; }
-    DB.lessons = {}; DB.tests = []; DB.weak = {}; DB.seen = {}; save(); armed = false; e.currentTarget.textContent = 'Progress erased'; renderProgress();
+    DB.lp = {}; DB.tests = []; DB.weak = {}; DB.seen = {}; save(); armed = false; e.currentTarget.textContent = 'Progress erased'; renderProgress();
   });
   $('#p-weakbtn').addEventListener('click', () => $('#pr-weak').click());
 

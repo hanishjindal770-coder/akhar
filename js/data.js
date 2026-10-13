@@ -18,28 +18,90 @@ const FINGER = {Backquote:0,Digit1:0,KeyQ:0,KeyA:0,KeyZ:0,ShiftLeft:0,Tab:0,Caps
 const FINGER_NAME = ['Left little · ਖੱਬੀ ਚੀਚੀ','Left ring · ਖੱਬੀ ਅਨਾਮਿਕਾ','Left middle · ਖੱਬੀ ਵਿਚਕਾਰਲੀ','Left index · ਖੱਬੀ ਪਹਿਲੀ ਉਂਗਲ','Right index · ਸੱਜੀ ਪਹਿਲੀ ਉਂਗਲ','Right middle · ਸੱਜੀ ਵਿਚਕਾਰਲੀ','Right ring · ਸੱਜੀ ਅਨਾਮਿਕਾ','Right little · ਸੱਜੀ ਚੀਚੀ','Thumb · ਅੰਗੂਠਾ'];
 
 /* ---------- Lessons ---------- */
-const LESSONS = [
-  {id:1, t:'Right hand home row', pa:'ਸੱਜਾ ਹੱਥ: ਘਰ ਵਾਲੀ ਕਤਾਰ', keys:['ਕ','ਤ','ਰ','ਚ'], tip:'Rest your right fingers on J K L ; . These four keys give ਰ ਕ ਤ ਚ. Your index finger finds the bump on J.'},
-  {id:2, t:'Left hand home row: lagan matras', pa:'ਖੱਬਾ ਹੱਥ: ਲਗਾਂ ਮਾਤਰਾਂ', keys:['ਿ','ੁ','ੇ','ੋ'], tip:'A S F G give the matras ੋ ੇ ਿ ੁ. A matra is always typed after its letter, even sihari: ਕਿ is K then F.'},
-  {id:3, t:'Index reach: ਪ and ਟ', pa:'ਪ ਅਤੇ ਟ', keys:['ਪ','ਟ'], tip:'Right index moves left to H for ਪ. Right little finger reaches the quote key for ਟ.'},
-  {id:4, t:'Top row matras: kanna, bihari, dulainkar', pa:'ਕੰਨਾ, ਬਿਹਾਰੀ, ਦੁਲੈਂਕੜ', keys:['ਾ','ੀ','ੂ'], tip:'E R T give ਾ ੀ ੂ . These are the most used matras in Punjabi, so drill them until they feel automatic.'},
-  {id:5, t:'Dulavan and kanaura', pa:'ਦੁਲਾਵਾਂ ਅਤੇ ਕਨੌੜਾ', keys:['ੈ','ੌ'], tip:'W gives ੈ and Q gives ੌ. Use the ring and little fingers of the left hand.'},
-  {id:6, t:'Top row letters', pa:'ਉੱਪਰਲੀ ਕਤਾਰ ਦੇ ਅੱਖਰ', keys:['ਬ','ਹ','ਗ','ਦ','ਜ','ਡ'], tip:'Y U I O P [ give ਬ ਹ ਗ ਦ ਜ ਡ. Return each finger to the home row after every reach.'},
-  {id:7, t:'Bottom row letters', pa:'ਹੇਠਲੀ ਕਤਾਰ ਦੇ ਅੱਖਰ', keys:['ਮ','ਨ','ਵ','ਲ','ਸ','ਯ'], tip:'C V B N M / give ਮ ਨ ਵ ਲ ਸ ਯ. Keep your wrists still and curl the fingers down.'},
-  {id:8, t:'Tippi and bindi', pa:'ਟਿੱਪੀ ਅਤੇ ਬਿੰਦੀ', keys:['ੰ','ਂ'], tip:'X gives tippi ੰ and Shift+X gives bindi ਂ. Tippi goes with mukta, sihari, aunkar and dulainkar (ਪੰਜ, ਹਿੰਦੀ, ਮੁੰਡਾ, ਨੂੰ). Bindi goes with the other matras (ਮਾਂ, ਨਹੀਂ, ਮੈਂ, ਕਿਉਂ).'},
-  {id:9, t:'Danda and comma', pa:'ਡੰਡੀ ਅਤੇ ਕਾਮਾ', keys:['।',','], tip:'Shift + full stop gives the danda । that ends every Punjabi sentence. Comma is on its usual key. No space before the danda.'},
-  {id:10, t:'Shift vowels: home row', pa:'ਸ਼ਿਫ਼ਟ ਨਾਲ ਸਵਰ', keys:['ਅ','ਇ','ਉ','ਏ','ਓ'], tip:'Hold Shift with the opposite hand. Shift+D ਅ, Shift+F ਇ, Shift+G ਉ, Shift+S ਏ, Shift+A ਓ. Exam rule: type ਉ as one key (Shift+G), never ੳ + ੁ.'},
-  {id:11, t:'Shift vowels: top row', pa:'ਸ਼ਿਫ਼ਟ ਨਾਲ ਲੰਮੇ ਸਵਰ', keys:['ਆ','ਈ','ਊ','ਐ','ਔ'], tip:'Shift+E ਆ, Shift+R ਈ, Shift+T ਊ, Shift+W ਐ, Shift+Q ਔ. Each full vowel is a single keystroke.'},
-  {id:12, t:'Shift letters: home row', pa:'ਸ਼ਿਫ਼ਟ ਨਾਲ ਅੱਖਰ', keys:['ਫ','ੜ','ਖ','ਥ','ਛ','ਠ'], tip:'The aspirated partner sits on the same key with Shift: ਕ/ਖ, ਤ/ਥ, ਚ/ਛ, ਟ/ਠ, ਪ/ਫ, and ਰ/ੜ.'},
-  {id:13, t:'Shift letters: top row', pa:'ਉੱਪਰਲੀ ਕਤਾਰ ਸ਼ਿਫ਼ਟ', keys:['ਭ','ਘ','ਧ','ਝ','ਢ','ਙ','ਞ'], tip:'Same idea on the top row: ਬ/ਭ, ਗ/ਘ, ਦ/ਧ, ਜ/ਝ, ਡ/ਢ. ਙ (Shift+U) and ਞ (Shift+]) are rare.'},
-  {id:14, t:'ਣ, ਸ਼ and ਲ਼', pa:'ਣ, ਸ਼, ਲ਼', keys:['ਣ','ਸ਼','ਲ਼'], tip:'Shift+C ਣ, Shift+M ਸ਼, Shift+N ਲ਼. ਸ਼ has its own key, so you never need to add a pair bindi to ਸ.'},
-  {id:15, t:'Addak', pa:'ਅੱਧਕ', keys:['ੱ'], tip:'Shift+4 gives addak ੱ. Type it before the letter it doubles: ਪੱਕਾ is ਪ ੱ ਕ ਾ.'},
-  {id:16, t:'Pair bindi (nukta)', pa:'ਪੈਰ ਬਿੰਦੀ', keys:['਼'], tip:'The ] key adds a pair bindi ਼ to the letter before it: ਖ਼ ਗ਼ ਜ਼ ਫ਼. Type the letter first, then ].'},
-  {id:17, t:'Pairi rara, haha and vava', pa:'ਪੈਰੀਂ ਰਾਰਾ, ਹਾਹਾ, ਵਾਵਾ', keys:['੍'], tip:'D gives the halant ੍. Letter + D + J makes pairi rara (ਪ੍ਰ). Letter + D + U makes pairi haha (ਪੜ੍ਹ). Shortcuts: Shift+3 types ੍ਰ and Shift+` types ੍ਹ in one go.'},
-  {id:18, t:'Gurmukhi numerals', pa:'ਗੁਰਮੁਖੀ ਅੰਕ', keys:['੧','੨','੩','੪','੫','੬','੭','੮','੯','੦'], tip:'The number row types Gurmukhi digits ੧ ੨ ੩. Reach up without lifting the whole hand.'},
-  {id:19, t:'Common words', pa:'ਆਮ ਸ਼ਬਦ', special:'words', keys:[], tip:'All keys are in play now. Read one word ahead and keep a steady rhythm.'},
-  {id:20, t:'Full sentences', pa:'ਪੂਰੇ ਵਾਕ', special:'sentences', keys:[], tip:'Sentences with danda and commas, like the exam. Focus on accuracy first, speed follows.'}
+// kind: keys (teaches new keys) · review (drills a group) · words · sentences · para (passage) · digits
+const STAGES = [
+  {id:'home', t:'Home row', pa:'ਘਰ ਵਾਲੀ ਕਤਾਰ'},
+  {id:'top', t:'Top row', pa:'ਉੱਪਰਲੀ ਕਤਾਰ'},
+  {id:'bottom', t:'Bottom row, tippi, bindi and danda', pa:'ਹੇਠਲੀ ਕਤਾਰ, ਟਿੱਪੀ, ਬਿੰਦੀ, ਡੰਡੀ'},
+  {id:'shift', t:'Shift vowels and letters', pa:'ਸ਼ਿਫ਼ਟ ਵਾਲੇ ਸਵਰ ਅਤੇ ਅੱਖਰ'},
+  {id:'special', t:'Addak, pair bindi, half letters, numerals', pa:'ਅੱਧਕ, ਪੈਰ ਬਿੰਦੀ, ਪੈਰੀਂ ਅੱਖਰ, ਅੰਕ'},
+  {id:'words', t:'Word practice', pa:'ਸ਼ਬਦ ਅਭਿਆਸ'},
+  {id:'sent', t:'Sentences and paragraphs', pa:'ਵਾਕ ਅਤੇ ਪੈਰੇ'}
 ];
+const LESSONS = [
+  {stage:'home', kind:'keys', t:'ਕ and ਤ', pa:'ਕ ਅਤੇ ਤ', keys:['ਕ','ਤ'], tip:'Rest your right hand on J K L ; with the index finger on the bump of J. K gives ਕ (middle finger) and L gives ਤ (ring finger).'},
+  {stage:'home', kind:'keys', t:'ਰ and ਚ', pa:'ਰ ਅਤੇ ਚ', keys:['ਰ','ਚ'], tip:'J gives ਰ with the right index finger. ; gives ਚ with the right little finger.'},
+  {stage:'home', kind:'review', t:'Right hand home row review', pa:'ਸੱਜੇ ਹੱਥ ਦੀ ਦੁਹਰਾਈ', keys:['ਕ','ਤ','ਰ','ਚ'], tip:'Keep all four fingers resting on J K L ; and look at the screen, not the keys.'},
+  {stage:'home', kind:'keys', t:'Sihari and aunkar', pa:'ਸਿਹਾਰੀ ਅਤੇ ਔਂਕੜ', keys:['ਿ','ੁ'], tip:'F gives ਿ and G gives ੁ with the left index finger. A matra is typed after its letter, even sihari: ਕਿ is K then F.'},
+  {stage:'home', kind:'keys', t:'Lavan and hora', pa:'ਲਾਵਾਂ ਅਤੇ ਹੋੜਾ', keys:['ੇ','ੋ'], tip:'S gives ੇ (left ring finger) and A gives ੋ (left little finger).'},
+  {stage:'home', kind:'keys', t:'ਪ and ਟ', pa:'ਪ ਅਤੇ ਟ', keys:['ਪ','ਟ'], tip:'Right index reaches left to H for ਪ. Right little finger reaches the quote key for ਟ.'},
+  {stage:'home', kind:'review', t:'Home row review', pa:'ਘਰ ਵਾਲੀ ਕਤਾਰ ਦੀ ਦੁਹਰਾਈ', keys:['ਕ','ਤ','ਰ','ਚ','ਪ','ਟ','ਿ','ੁ','ੇ','ੋ'], tip:'Every key of the home row together. Aim for steady rhythm rather than bursts.'},
+
+  {stage:'top', kind:'keys', t:'Kanna', pa:'ਕੰਨਾ', keys:['ਾ'], tip:'E gives kanna ਾ with the left middle finger. It is the most used matra in Punjabi.'},
+  {stage:'top', kind:'keys', t:'Bihari and dulainkar', pa:'ਬਿਹਾਰੀ ਅਤੇ ਦੁਲੈਂਕੜ', keys:['ੀ','ੂ'], tip:'R gives ੀ and T gives ੂ, both with the left index finger reaching up.'},
+  {stage:'top', kind:'keys', t:'Dulavan and kanaura', pa:'ਦੁਲਾਵਾਂ ਅਤੇ ਕਨੌੜਾ', keys:['ੈ','ੌ'], tip:'W gives ੈ (left ring finger) and Q gives ੌ (left little finger).'},
+  {stage:'top', kind:'review', t:'All matras review', pa:'ਸਾਰੀਆਂ ਲਗਾਂ ਮਾਤਰਾਂ', keys:['ਾ','ਿ','ੀ','ੁ','ੂ','ੇ','ੈ','ੋ','ੌ'], tip:'The nine matras sit under the left hand: Q W E R T on top, A S F G on the home row.'},
+  {stage:'top', kind:'keys', t:'ਬ and ਹ', pa:'ਬ ਅਤੇ ਹ', keys:['ਬ','ਹ'], tip:'Y gives ਬ and U gives ਹ, both with the right index finger.'},
+  {stage:'top', kind:'keys', t:'ਗ and ਦ', pa:'ਗ ਅਤੇ ਦ', keys:['ਗ','ਦ'], tip:'I gives ਗ (right middle finger) and O gives ਦ (right ring finger).'},
+  {stage:'top', kind:'keys', t:'ਜ and ਡ', pa:'ਜ ਅਤੇ ਡ', keys:['ਜ','ਡ'], tip:'P gives ਜ and [ gives ਡ, both with the right little finger.'},
+  {stage:'top', kind:'review', t:'Top row review', pa:'ਉੱਪਰਲੀ ਕਤਾਰ ਦੀ ਦੁਹਰਾਈ', keys:['ਬ','ਹ','ਗ','ਦ','ਜ','ਡ','ਾ','ੀ','ੂ','ੈ','ੌ'], tip:'Return each finger to the home row after every reach.'},
+
+  {stage:'bottom', kind:'keys', t:'ਮ and ਨ', pa:'ਮ ਅਤੇ ਨ', keys:['ਮ','ਨ'], tip:'C gives ਮ (left middle finger) and V gives ਨ (left index finger).'},
+  {stage:'bottom', kind:'keys', t:'ਵ and ਲ', pa:'ਵ ਅਤੇ ਲ', keys:['ਵ','ਲ'], tip:'B gives ਵ (left index) and N gives ਲ (right index).'},
+  {stage:'bottom', kind:'keys', t:'ਸ and ਯ', pa:'ਸ ਅਤੇ ਯ', keys:['ਸ','ਯ'], tip:'M gives ਸ (right index) and / gives ਯ (right little finger).'},
+  {stage:'bottom', kind:'review', t:'Bottom row review', pa:'ਹੇਠਲੀ ਕਤਾਰ ਦੀ ਦੁਹਰਾਈ', keys:['ਮ','ਨ','ਵ','ਲ','ਸ','ਯ'], tip:'Curl the fingers down without moving the wrists.'},
+  {stage:'bottom', kind:'keys', t:'Tippi', pa:'ਟਿੱਪੀ', keys:['ੰ'], tip:'X gives tippi ੰ. Use it with mukta, sihari, aunkar and dulainkar: ਪੰਜ, ਹਿੰਦੀ, ਮੁੰਡਾ, ਨੂੰ.'},
+  {stage:'bottom', kind:'keys', t:'Bindi', pa:'ਬਿੰਦੀ', keys:['ਂ'], tip:'Shift+X gives bindi ਂ. Use it with the other matras: ਮਾਂ, ਨਹੀਂ, ਮੈਂ, ਸਮੇਂ, ਕਿਉਂ.'},
+  {stage:'bottom', kind:'keys', t:'Danda and comma', pa:'ਡੰਡੀ ਅਤੇ ਕਾਮਾ', keys:['।',','], tip:'Shift + full stop gives the danda । that ends every sentence. No space before it, one space after.'},
+  {stage:'bottom', kind:'review', t:'All unshifted keys', pa:'ਬਿਨਾਂ ਸ਼ਿਫ਼ਟ ਸਾਰੇ ਬਟਨ', keys:['ਮ','ਨ','ਵ','ਲ','ਸ','ਯ','ੰ','ਂ','ਬ','ਹ','ਗ','ਦ','ਜ','ਡ'], tip:'You now know every key you can type without Shift. This lesson mixes all of them.'},
+
+  {stage:'shift', kind:'keys', t:'ਅ ਇ ਉ', pa:'ਅ ਇ ਉ', keys:['ਅ','ਇ','ਉ'], tip:'Hold Shift with the right hand. Shift+D ਅ, Shift+F ਇ, Shift+G ਉ. Exam rule: ਉ is one key, never ੳ + ੁ.'},
+  {stage:'shift', kind:'keys', t:'ਏ and ਓ', pa:'ਏ ਅਤੇ ਓ', keys:['ਏ','ਓ'], tip:'Shift+S ਏ and Shift+A ਓ.'},
+  {stage:'shift', kind:'keys', t:'ਆ ਈ ਊ', pa:'ਆ ਈ ਊ', keys:['ਆ','ਈ','ਊ'], tip:'Shift+E ਆ, Shift+R ਈ, Shift+T ਊ. Each full vowel is a single keystroke.'},
+  {stage:'shift', kind:'keys', t:'ਐ and ਔ', pa:'ਐ ਅਤੇ ਔ', keys:['ਐ','ਔ'], tip:'Shift+W ਐ and Shift+Q ਔ.'},
+  {stage:'shift', kind:'review', t:'Vowels review', pa:'ਸਵਰਾਂ ਦੀ ਦੁਹਰਾਈ', keys:['ਅ','ਆ','ਇ','ਈ','ਉ','ਊ','ਏ','ਐ','ਓ','ਔ'], tip:'All ten vowel letters. Press Shift with the hand that is not typing the letter.'},
+  {stage:'shift', kind:'keys', t:'ਖ and ਥ', pa:'ਖ ਅਤੇ ਥ', keys:['ਖ','ਥ'], tip:'Shift+K ਖ and Shift+L ਥ. The aspirated letter sits on the same key as its partner: ਕ/ਖ, ਤ/ਥ. Hold Shift with the left hand.'},
+  {stage:'shift', kind:'keys', t:'ਛ and ਠ', pa:'ਛ ਅਤੇ ਠ', keys:['ਛ','ਠ'], tip:"Shift+; ਛ and Shift+' ਠ. Same pairs again: ਚ/ਛ, ਟ/ਠ."},
+  {stage:'shift', kind:'keys', t:'ਫ and ੜ', pa:'ਫ ਅਤੇ ੜ', keys:['ਫ','ੜ'], tip:'Shift+H ਫ and Shift+J ੜ.'},
+  {stage:'shift', kind:'keys', t:'ਭ and ਘ', pa:'ਭ ਅਤੇ ਘ', keys:['ਭ','ਘ'], tip:'Shift+Y ਭ and Shift+I ਘ: ਬ/ਭ and ਗ/ਘ.'},
+  {stage:'shift', kind:'keys', t:'ਧ and ਝ', pa:'ਧ ਅਤੇ ਝ', keys:['ਧ','ਝ'], tip:'Shift+O ਧ and Shift+P ਝ: ਦ/ਧ and ਜ/ਝ.'},
+  {stage:'shift', kind:'keys', t:'ਢ ਣ ਙ ਞ', pa:'ਢ ਣ ਙ ਞ', keys:['ਢ','ਣ','ਙ','ਞ'], tip:'Shift+[ ਢ and Shift+C ਣ are common. Shift+U ਙ and Shift+] ਞ are rare but appear in exams.'},
+  {stage:'shift', kind:'keys', t:'ਸ਼ and ਲ਼', pa:'ਸ਼ ਅਤੇ ਲ਼', keys:['ਸ਼','ਲ਼'], tip:'Shift+M ਸ਼ and Shift+N ਲ਼. ਸ਼ has its own key, so you never add a pair bindi to ਸ.'},
+  {stage:'shift', kind:'review', t:'Shift letters review', pa:'ਸ਼ਿਫ਼ਟ ਅੱਖਰਾਂ ਦੀ ਦੁਹਰਾਈ', keys:['ਖ','ਥ','ਛ','ਠ','ਫ','ੜ','ਭ','ਘ','ਧ','ਝ','ਢ','ਣ','ਸ਼','ਲ਼'], tip:'All the Shift letters mixed with everything learned so far.'},
+
+  {stage:'special', kind:'keys', t:'Addak', pa:'ਅੱਧਕ', keys:['ੱ'], tip:'Shift+4 gives addak ੱ. Type it before the letter it doubles: ਪੱਕਾ is ਪ ੱ ਕ ਾ.'},
+  {stage:'special', kind:'keys', t:'Pair bindi', pa:'ਪੈਰ ਬਿੰਦੀ', keys:['਼'], tip:'The ] key adds pair bindi ਼ to the letter before it: ਖ਼ ਗ਼ ਜ਼ ਫ਼. Type the letter first, then ].'},
+  {stage:'special', kind:'keys', t:'Pairi rara', pa:'ਪੈਰੀਂ ਰਾਰਾ', keys:['੍'], focus:'੍ਰ', tip:'Letter, then D (halant ੍), then J (ਰ) makes pairi rara: ਪ੍ਰ = H D J. Shift+3 types ੍ਰ in one go.'},
+  {stage:'special', kind:'keys', t:'Pairi haha and vava', pa:'ਪੈਰੀਂ ਹਾਹਾ ਅਤੇ ਵਾਵਾ', keys:['੍'], focus:'੍ਹ', tip:'Letter, D, U makes pairi haha: ਪੜ੍ਹ, ਕੱਲ੍ਹ, ਉਨ੍ਹਾਂ. Shift+` types ੍ਹ in one go. Letter, D, B makes pairi vava (ਸ੍ਵ).'},
+  {stage:'special', kind:'digits', t:'Gurmukhi numerals', pa:'ਗੁਰਮੁਖੀ ਅੰਕ', keys:['੧','੨','੩','੪','੫','੬','੭','੮','੯','੦'], tip:'The number row types ੧ ੨ ੩. Reach up with the nearest finger and come straight back.'},
+  {stage:'special', kind:'review', t:'Special marks review', pa:'ਖ਼ਾਸ ਚਿੰਨ੍ਹਾਂ ਦੀ ਦੁਹਰਾਈ', keys:['ੱ','਼','੍'], tip:'Addak, pair bindi and half letters in real words. These are where most exam mistakes happen, because one wrong mark makes the whole word wrong.'},
+
+  {stage:'words', kind:'words', list:'COMMON', t:'Most common words', pa:'ਸਭ ਤੋਂ ਆਮ ਸ਼ਬਦ', tip:'These small words make up a third of any passage. Typing them without thinking saves a lot of time.'},
+  {stage:'words', kind:'words', list:'HOME', t:'Home and family', pa:'ਘਰ ਅਤੇ ਪਰਿਵਾਰ', tip:'Everyday words about family, food and the house.'},
+  {stage:'words', kind:'words', list:'NATURE', t:'Farming and nature', pa:'ਖੇਤੀ ਅਤੇ ਕੁਦਰਤ', tip:'Words that come up in passages about Punjab, farming and the environment.'},
+  {stage:'words', kind:'words', list:'EDU', t:'Education, time and numbers', pa:'ਸਿੱਖਿਆ, ਸਮਾਂ ਅਤੇ ਗਿਣਤੀ', tip:'Days, months, numbers in words, and school vocabulary.'},
+  {stage:'words', kind:'words', list:'VERBS', t:'Verbs', pa:'ਕਿਰਿਆਵਾਂ', tip:'Verb forms with ਦਾ, ਦੀ, ਦੇ and ਣਾ endings. Watch bindi versus tippi.'},
+  {stage:'words', kind:'words', list:'OFFICE', t:'Office and government', pa:'ਦਫ਼ਤਰ ਅਤੇ ਸਰਕਾਰ', tip:'Official vocabulary used in clerk exam passages and letters.'},
+  {stage:'words', kind:'words', list:'ALL', t:'Mixed words test', pa:'ਮਿਲੇ ਜੁਲੇ ਸ਼ਬਦ', tip:'Words from every list, in random order.'},
+
+  {stage:'sent', kind:'sentences', list:'SENTENCES', t:'Everyday sentences 1', pa:'ਆਮ ਵਾਕ ੧', tip:'One space between words, no space before the danda.'},
+  {stage:'sent', kind:'sentences', list:'SENTENCES', t:'Everyday sentences 2', pa:'ਆਮ ਵਾਕ ੨', tip:'Read a few words ahead while you type.'},
+  {stage:'sent', kind:'sentences', list:'OFFICE_SENTENCES', t:'Office sentences', pa:'ਦਫ਼ਤਰੀ ਵਾਕ', tip:'Sentences in the style of official letters and orders.'},
+  {stage:'sent', kind:'para', passage:'punjab', t:'Paragraph: The land of Punjab', pa:'ਪੈਰਾ: ਪੰਜਾਬ ਦੀ ਧਰਤੀ', tip:'A full exam passage, a few sentences at a time.'},
+  {stage:'sent', kind:'para', passage:'computer', t:'Paragraph: Computers and typing', pa:'ਪੈਰਾ: ਕੰਪਿਊਟਰ ਅਤੇ ਟਾਈਪਿੰਗ', tip:'A full exam passage, a few sentences at a time.'},
+  {stage:'sent', kind:'para', passage:'office', t:'Paragraph: Office order', pa:'ਪੈਰਾ: ਦਫ਼ਤਰੀ ਹੁਕਮ', tip:'Official language, as in clerk exam passages.'},
+  {stage:'sent', kind:'para', passage:'education', t:'Paragraph: The value of education', pa:'ਪੈਰਾ: ਸਿੱਖਿਆ ਦਾ ਮਹੱਤਵ', tip:'A full exam passage, a few sentences at a time.'},
+  {stage:'sent', kind:'para', passage:'bhagat', t:'Paragraph: Shaheed Bhagat Singh', pa:'ਪੈਰਾ: ਸ਼ਹੀਦ ਭਗਤ ਸਿੰਘ', tip:'Names and places with ਜ਼, ੍ਹ and ੱ. Take care with every mark.'}
+].map((l, i) => Object.assign({id: i + 1}, l));
+
+const WORD_LISTS = {
+  COMMON: `ਅਤੇ ਜਾਂ ਪਰ ਕਿ ਜੋ ਜਦੋਂ ਤਾਂ ਵੀ ਹੀ ਨਹੀਂ ਹਾਂ ਨਾ ਇਹ ਉਹ ਇਸ ਉਸ ਇਨ੍ਹਾਂ ਉਨ੍ਹਾਂ ਮੈਂ ਅਸੀਂ ਤੁਸੀਂ ਆਪ ਮੇਰਾ ਸਾਡਾ ਤੁਹਾਡਾ ਆਪਣਾ ਆਪਣੀ ਆਪਣੇ ਕੌਣ ਕੀ ਕਿਉਂ ਕਿੱਥੇ ਕਦੋਂ ਕਿਵੇਂ ਕਿੰਨਾ ਵਿੱਚ ਉੱਤੇ ਹੇਠਾਂ ਅੰਦਰ ਬਾਹਰ ਨਾਲ ਲਈ ਤੋਂ ਨੂੰ ਦਾ ਦੀ ਦੇ ਨੇ ਵੱਲੋਂ ਬਾਰੇ ਬਹੁਤ ਥੋੜ੍ਹਾ ਸਭ ਹਰ ਕੋਈ ਕੁਝ ਹੋਰ ਬਿਲਕੁਲ ਜ਼ਰੂਰ ਹੁਣ ਫਿਰ ਪਹਿਲਾਂ ਬਾਅਦ ਹਮੇਸ਼ਾ ਕਦੇ ਇੱਥੇ ਉੱਥੇ ਚੰਗਾ ਮਾੜਾ ਵੱਡਾ ਛੋਟਾ ਨਵਾਂ ਪੁਰਾਣਾ ਸੋਹਣਾ ਜ਼ਰੂਰੀ ਸੌਖਾ ਔਖਾ ਸਾਫ਼ ਸਹੀ ਗ਼ਲਤ ਹੈ ਹਨ ਸੀ ਸਨ ਗਿਆ ਗਈ ਗਏ ਕਰਕੇ ਤਰ੍ਹਾਂ ਵਾਲਾ ਵਾਲੀ ਵਾਲੇ ਜਿਹੜਾ ਜਿਹੜੀ ਇੱਕ ਦੋ`,
+  HOME: `ਘਰ ਮਾਤਾ ਪਿਤਾ ਮਾਂ ਬਾਪੂ ਭਰਾ ਭੈਣ ਦਾਦਾ ਦਾਦੀ ਨਾਨਾ ਨਾਨੀ ਚਾਚਾ ਚਾਚੀ ਤਾਇਆ ਤਾਈ ਮਾਮਾ ਮਾਮੀ ਮਾਸੀ ਭੂਆ ਪੁੱਤਰ ਧੀ ਬੱਚਾ ਬੱਚੇ ਪਰਿਵਾਰ ਰਸੋਈ ਕਮਰਾ ਵਿਹੜਾ ਛੱਤ ਦਰਵਾਜ਼ਾ ਖਿੜਕੀ ਮੰਜਾ ਕੁਰਸੀ ਮੇਜ਼ ਪੱਖਾ ਬਿਜਲੀ ਪਾਣੀ ਰੋਟੀ ਦਾਲ ਸਬਜ਼ੀ ਚੌਲ ਦੁੱਧ ਦਹੀਂ ਲੱਸੀ ਮੱਖਣ ਘਿਓ ਚਾਹ ਖੰਡ ਲੂਣ ਮਿਰਚ ਆਟਾ ਗੁੜ ਸਾਗ ਪਰੌਂਠਾ ਖੀਰ ਫਲ ਸੇਬ ਕੇਲਾ ਅੰਬ ਸੰਤਰਾ ਅੰਗੂਰ ਕੱਪੜੇ ਜੁੱਤੀ ਪੱਗ ਚੁੰਨੀ ਕਮੀਜ਼ ਸਲਵਾਰ ਮਹਿਮਾਨ ਗੁਆਂਢੀ ਦੋਸਤ ਪਿਆਰ ਸਤਿਕਾਰ ਖ਼ੁਸ਼ੀ ਤਿਉਹਾਰ ਵਿਆਹ ਮੇਲਾ ਗੀਤ ਬੋਲੀ ਭੰਗੜਾ ਗਿੱਧਾ`,
+  NATURE: `ਖੇਤ ਖੇਤੀ ਕਿਸਾਨ ਫ਼ਸਲ ਕਣਕ ਝੋਨਾ ਮੱਕੀ ਕਪਾਹ ਗੰਨਾ ਸਰ੍ਹੋਂ ਛੋਲੇ ਬਾਜਰਾ ਬੀਜ ਖਾਦ ਨਹਿਰ ਖੂਹ ਟਿਊਬਵੈੱਲ ਟਰੈਕਟਰ ਹਲ ਬਲਦ ਗਾਂ ਮੱਝ ਬੱਕਰੀ ਘੋੜਾ ਕੁੱਤਾ ਬਿੱਲੀ ਚਿੜੀ ਮੋਰ ਕਾਂ ਤੋਤਾ ਰੁੱਖ ਬੂਟਾ ਪੱਤਾ ਫੁੱਲ ਟਾਹਣੀ ਜੜ੍ਹ ਮਿੱਟੀ ਧਰਤੀ ਅਸਮਾਨ ਸੂਰਜ ਚੰਨ ਤਾਰੇ ਬੱਦਲ ਮੀਂਹ ਹਵਾ ਧੁੱਪ ਛਾਂ ਗਰਮੀ ਸਰਦੀ ਬਸੰਤ ਪਤਝੜ ਦਰਿਆ ਪਹਾੜ ਜੰਗਲ ਮੈਦਾਨ ਬਾਗ਼ ਮੰਡੀ ਵਾਢੀ ਬਿਜਾਈ ਸਿੰਚਾਈ ਪਰਾਲੀ ਪ੍ਰਦੂਸ਼ਣ ਵਾਤਾਵਰਣ ਕੁਦਰਤ ਪਿੰਡ ਸ਼ਹਿਰ ਸੜਕ ਪੁਲ ਰਸਤਾ`,
+  EDU: `ਸਕੂਲ ਕਾਲਜ ਯੂਨੀਵਰਸਿਟੀ ਜਮਾਤ ਅਧਿਆਪਕ ਵਿਦਿਆਰਥੀ ਕਿਤਾਬ ਕਾਪੀ ਕਲਮ ਪੈਨਸਿਲ ਬਸਤਾ ਸਬਕ ਪਾਠ ਸਵਾਲ ਜਵਾਬ ਗਿਆਨ ਸਿੱਖਿਆ ਪੜ੍ਹਾਈ ਲਿਖਾਈ ਇਮਤਿਹਾਨ ਨੰਬਰ ਅੰਕ ਗਣਿਤ ਵਿਗਿਆਨ ਇਤਿਹਾਸ ਭੂਗੋਲ ਭਾਸ਼ਾ ਪੰਜਾਬੀ ਹਿੰਦੀ ਅੰਗਰੇਜ਼ੀ ਲਾਇਬ੍ਰੇਰੀ ਅੱਜ ਕੱਲ੍ਹ ਪਰਸੋਂ ਸਵੇਰ ਦੁਪਹਿਰ ਸ਼ਾਮ ਰਾਤ ਦਿਨ ਹਫ਼ਤਾ ਮਹੀਨਾ ਸਾਲ ਘੰਟਾ ਮਿੰਟ ਸਮਾਂ ਐਤਵਾਰ ਸੋਮਵਾਰ ਮੰਗਲਵਾਰ ਬੁੱਧਵਾਰ ਵੀਰਵਾਰ ਸ਼ੁੱਕਰਵਾਰ ਸ਼ਨਿੱਚਰਵਾਰ ਜਨਵਰੀ ਫ਼ਰਵਰੀ ਮਾਰਚ ਅਪ੍ਰੈਲ ਮਈ ਜੂਨ ਜੁਲਾਈ ਅਗਸਤ ਸਤੰਬਰ ਅਕਤੂਬਰ ਨਵੰਬਰ ਦਸੰਬਰ ਇੱਕ ਦੋ ਤਿੰਨ ਚਾਰ ਪੰਜ ਛੇ ਸੱਤ ਅੱਠ ਨੌਂ ਦਸ ਵੀਹ ਪੰਜਾਹ ਸੌ ਹਜ਼ਾਰ ਲੱਖ ਕਰੋੜ`,
+  VERBS: `ਕਰਨਾ ਜਾਣਾ ਆਉਣਾ ਖਾਣਾ ਪੀਣਾ ਪੜ੍ਹਨਾ ਲਿਖਣਾ ਬੋਲਣਾ ਸੁਣਨਾ ਵੇਖਣਾ ਦੇਣਾ ਲੈਣਾ ਰਹਿਣਾ ਸੌਣਾ ਉੱਠਣਾ ਬੈਠਣਾ ਤੁਰਨਾ ਦੌੜਨਾ ਹੱਸਣਾ ਰੋਣਾ ਸਿੱਖਣਾ ਸਿਖਾਉਣਾ ਸਮਝਣਾ ਸੋਚਣਾ ਖੇਡਣਾ ਗਾਉਣਾ ਨੱਚਣਾ ਖੋਲ੍ਹਣਾ ਭੇਜਣਾ ਮਿਲਣਾ ਲੱਭਣਾ ਬਣਾਉਣਾ ਚਲਾਉਣਾ ਬਚਾਉਣਾ ਕਮਾਉਣਾ ਪਹੁੰਚਣਾ ਜਿੱਤਣਾ ਹਾਰਨਾ ਪੁੱਛਣਾ ਦੱਸਣਾ ਕਰਦਾ ਕਰਦੀ ਕਰਦੇ ਕੀਤਾ ਕੀਤੀ ਕੀਤੇ ਜਾਂਦਾ ਜਾਂਦੀ ਜਾਂਦੇ ਹੋਇਆ ਹੋਈ ਹੋਏ ਹੋਵੇਗਾ ਹੋਵੇਗੀ ਚਾਹੀਦਾ ਚਾਹੀਦੀ ਚਾਹੀਦੇ ਸਕਦਾ ਸਕਦੀ ਸਕਦੇ ਰਿਹਾ ਰਹੀ ਰਹੇ ਦਿੱਤਾ ਦਿੱਤੀ ਲਿਆ ਲਈ ਕਹਿੰਦਾ ਰਹਿੰਦਾ ਦਿੰਦਾ ਹੁੰਦਾ ਹੁੰਦੀ ਹੁੰਦੇ ਪਾਉਂਦੇ ਮਨਾਉਂਦੇ ਸਿਖਾਉਂਦੀ`,
+  OFFICE: `ਦਫ਼ਤਰ ਸਰਕਾਰ ਸਰਕਾਰੀ ਅਫ਼ਸਰ ਕਲਰਕ ਕਰਮਚਾਰੀ ਅਧਿਕਾਰੀ ਵਿਭਾਗ ਮੰਤਰੀ ਸਕੱਤਰ ਡਾਇਰੈਕਟਰ ਜ਼ਿਲ੍ਹਾ ਤਹਿਸੀਲ ਪੰਚਾਇਤ ਸਰਪੰਚ ਨਗਰ ਨਿਗਮ ਅਰਜ਼ੀ ਪੱਤਰ ਚਿੱਠੀ ਫ਼ਾਈਲ ਰਿਕਾਰਡ ਰਿਪੋਰਟ ਹੁਕਮ ਨੋਟਿਸ ਸੂਚਨਾ ਸੂਚੀ ਮਿਤੀ ਨੰਬਰ ਦਸਤਖ਼ਤ ਮੋਹਰ ਤਨਖ਼ਾਹ ਛੁੱਟੀ ਬਦਲੀ ਤਰੱਕੀ ਭਰਤੀ ਨੌਕਰੀ ਅਸਾਮੀ ਉਮੀਦਵਾਰ ਪ੍ਰੀਖਿਆ ਨਤੀਜਾ ਯੋਗਤਾ ਤਜਰਬਾ ਸਰਟੀਫਿਕੇਟ ਦਸਤਾਵੇਜ਼ ਪੜਤਾਲ ਕਾਰਵਾਈ ਮਨਜ਼ੂਰੀ ਪ੍ਰਵਾਨਗੀ ਬਜਟ ਖ਼ਰਚਾ ਰਕਮ ਰੁਪਏ ਬੈਂਕ ਖਾਤਾ ਟੈਕਸ ਕਾਨੂੰਨ ਨਿਯਮ ਅਦਾਲਤ ਜੱਜ ਵਕੀਲ ਪੁਲਿਸ ਥਾਣਾ ਸ਼ਿਕਾਇਤ ਮੀਟਿੰਗ ਫ਼ੈਸਲਾ ਸਹਾਇਤਾ ਯੋਜਨਾ ਸਕੀਮ ਪੈਨਸ਼ਨ ਲਾਭਪਾਤਰੀ ਕੰਪਿਊਟਰ ਟਾਈਪਿੰਗ ਕੀਬੋਰਡ ਬਿਨੈਕਾਰ ਹਾਜ਼ਰੀ ਸੇਵਾ ਕੇਂਦਰ`
+};
 
 /* ---------- Word bank ---------- */
 const WORDS = `ਕਰ ਪਰ ਤਰ ਚਰ ਕਟ ਤਰਕ ਕਿ ਕੇ ਤੇ ਕਿਤੇ ਕਿਰਤ ਤੋਪ ਰੇਤ ਕੋਟ ਪੇਟ ਚੋਟ ਚੋਰ ਤੁਰ ਪਰਤ ਟਿਕਟ ਕਾਰ ਤਾਰ ਪਾਰ ਚਾਰ ਤਾਰਾ ਪੀਰ ਤੀਰ ਕੀਤਾ ਪਾਤਰ ਕਾਪੀ ਟੋਪੀ ਰੋਟੀ ਚੋਟੀ ਪੂਰਾ ਪੈਰ ਤੈਰਾਕ ਚੌਕ ਪਤਾ ਪਾਪ ਤਾਪ ਚਾਕੂ ਪਾਰਟੀ ਟਾਪੂ ਪਿਤਾ ਚਾਚਾ ਕਾਕਾ ਰੀਤ ਕੁਰਤਾ ਤਰੀਕਾ ਕਰਤਾ ਚੀਤਾ ਪੀਤਾ ਰਾਤ ਤੀਰਥ
@@ -50,7 +112,8 @@ const WORDS = `ਕਰ ਪਰ ਤਰ ਚਰ ਕਟ ਤਰਕ ਕਿ ਕੇ ਤੇ
 ਖੇਤ ਖੇਤੀ ਖੇਡ ਖ਼ਬਰ ਖ਼ੁਸ਼ੀ ਖੁਸ਼ੀ ਖਿੜਕੀ ਖੂਹ ਥਾਲੀ ਥੋੜ੍ਹਾ ਛੇ ਛੋਟਾ ਛੱਤ ਛੁੱਟੀ ਠੀਕ ਠੰਢ ਫੁੱਲ ਫ਼ਸਲ ਫ਼ਾਈਲ ਫ਼ਰਜ਼ ਫਿਰ ਸੜਕ ਪੜ੍ਹਨਾ ਪੜ੍ਹਾਈ ਕੁੜੀ ਗੱਡੀ ਜੋੜ ਭਰਾ ਭੈਣ ਭਾਸ਼ਾ ਭਾਰਤ ਭਰਤੀ ਭੋਜਨ ਘਰ ਘੱਟ ਘੰਟਾ ਘਾਹ ਧਰਮ ਧਿਆਨ ਧੀ ਧੰਨਵਾਦ ਝੋਨਾ ਝੂਠ ਢੋਲ ਢੰਗ ਪਾਣੀ ਰਾਣੀ ਕਹਾਣੀ ਪੁਰਾਣਾ ਲਿਖਣਾ ਸੁਣਨਾ ਗਿਣਤੀ ਸ਼ਹਿਰ ਸ਼ਬਦ ਸ਼ੁੱਧ ਸ਼ਕਤੀ ਸ਼ੁਰੂ ਸ਼ਾਂਤੀ ਵਿਸ਼ਾ ਕੋਸ਼ਿਸ਼ ਬਾਰਿਸ਼ ਮਸ਼ੀਨ ਪੀਲ਼ਾ
 ਪੱਕਾ ਬੱਚਾ ਸੱਚ ਹੱਥ ਮੱਖਣ ਲੱਸੀ ਦੁੱਧ ਰੁੱਖ ਪੱਤਾ ਸੱਤ ਅੱਠ ਕੱਲ੍ਹ ਗੱਲ ਵੱਡਾ ਮਿੱਠਾ ਚਿੱਟਾ ਖੱਟਾ ਮਿੱਟੀ ਚਿੱਠੀ ਪੁੱਤਰ ਦੱਸ ਵਿੱਚ ਕਬੱਡੀ ਸੱਭਿਆਚਾਰ ਮੁੱਖ ਲੱਖ ਹਿੱਸਾ ਇੱਥੇ ਕਿੱਥੇ ਜਿੱਥੇ ਉੱਠਣਾ ਸਿੱਖਣਾ
 ਜ਼ਮੀਨ ਜ਼ਰੂਰੀ ਜ਼ਿਲ੍ਹਾ ਜ਼ਿੰਦਗੀ ਕਾਗ਼ਜ਼ ਗ਼ਰੀਬ ਬਾਗ਼ ਮਜ਼ਦੂਰ ਸਬਜ਼ੀ ਦਰਵਾਜ਼ਾ ਹਜ਼ਾਰ ਮੇਜ਼ ਸਫ਼ਰ ਦਫ਼ਤਰ ਮੁਫ਼ਤ ਹਫ਼ਤਾ ਸਾਫ਼ ਤਰੱਕੀ ਖ਼ਾਲਸਾ
-ਪ੍ਰੀਖਿਆ ਪ੍ਰਬੰਧ ਪ੍ਰਧਾਨ ਪ੍ਰਸਿੱਧ ਪ੍ਰਦੂਸ਼ਣ ਪ੍ਰੀਤ ਪ੍ਰੇਮ ਕ੍ਰਿਪਾ ਕ੍ਰਾਂਤੀ ਸ੍ਰੀ ਤ੍ਰਿਪਤ ਦ੍ਰਿੜ ਅੰਮ੍ਰਿਤਸਰ ਪੜ੍ਹਾਈ ਚੜ੍ਹਦਾ ਤਰ੍ਹਾਂ ਸਰ੍ਹੋਂ ਬੁੱਲ੍ਹ ਖੁੱਲ੍ਹਾ ਸਵੈ`.split(/\s+/).filter(Boolean);
+ਪ੍ਰੀਖਿਆ ਪ੍ਰਬੰਧ ਪ੍ਰਧਾਨ ਪ੍ਰਸਿੱਧ ਪ੍ਰਦੂਸ਼ਣ ਪ੍ਰੀਤ ਪ੍ਰੇਮ ਕ੍ਰਿਪਾ ਕ੍ਰਾਂਤੀ ਸ੍ਰੀ ਤ੍ਰਿਪਤ ਦ੍ਰਿੜ ਅੰਮ੍ਰਿਤਸਰ ਪੜ੍ਹਾਈ ਚੜ੍ਹਦਾ ਤਰ੍ਹਾਂ ਸਰ੍ਹੋਂ ਬੁੱਲ੍ਹ ਖੁੱਲ੍ਹਾ ਸਵੈ ${Object.values(WORD_LISTS).join(' ')}`.split(/\s+/).filter(Boolean);
+WORD_LISTS.ALL = Object.values(WORD_LISTS).join(' ');
 
 const SENTENCES = [
   'ਪੰਜਾਬ ਪੰਜ ਦਰਿਆਵਾਂ ਦੀ ਧਰਤੀ ਹੈ।',
@@ -70,7 +133,66 @@ const SENTENCES = [
   'ਗੁਰਮੁਖੀ ਲਿਪੀ ਵਿੱਚ ਪੈਂਤੀ ਅੱਖਰ ਹਨ।',
   'ਮਿਹਨਤ ਦਾ ਫਲ ਸਦਾ ਮਿੱਠਾ ਹੁੰਦਾ ਹੈ।',
   'ਵਿਸਾਖੀ ਵਾਲੇ ਦਿਨ ਕਿਸਾਨ ਢੋਲ ਦੀ ਤਾਲ ਉੱਤੇ ਭੰਗੜਾ ਪਾਉਂਦੇ ਹਨ।',
-  'ਸੇਵਾ ਕੇਂਦਰ ਵਿੱਚ ਅਰਜ਼ੀ ਦੇਣ ਸਮੇਂ ਸਾਰੇ ਦਸਤਾਵੇਜ਼ ਨਾਲ ਲੈ ਕੇ ਜਾਓ।'
+  'ਸੇਵਾ ਕੇਂਦਰ ਵਿੱਚ ਅਰਜ਼ੀ ਦੇਣ ਸਮੇਂ ਸਾਰੇ ਦਸਤਾਵੇਜ਼ ਨਾਲ ਲੈ ਕੇ ਜਾਓ।',
+  'ਮੈਂ ਪੰਜਾਬ ਦੇ ਇੱਕ ਛੋਟੇ ਜਿਹੇ ਪਿੰਡ ਵਿੱਚ ਰਹਿੰਦਾ ਹਾਂ।',
+  'ਸਾਡੇ ਘਰ ਵਿੱਚ ਪੰਜ ਜੀਅ ਹਨ।',
+  'ਮੇਰੇ ਪਿਤਾ ਜੀ ਖੇਤੀ ਕਰਦੇ ਹਨ।',
+  'ਮੇਰੀ ਮਾਤਾ ਜੀ ਸਵੇਰੇ ਜਲਦੀ ਉੱਠਦੇ ਹਨ।',
+  'ਅੱਜ ਮੌਸਮ ਬਹੁਤ ਸੁਹਾਵਣਾ ਹੈ।',
+  'ਕੱਲ੍ਹ ਸਾਰਾ ਦਿਨ ਮੀਂਹ ਪੈਂਦਾ ਰਿਹਾ।',
+  'ਬੱਚੇ ਸਕੂਲ ਦੇ ਮੈਦਾਨ ਵਿੱਚ ਖੇਡ ਰਹੇ ਹਨ।',
+  'ਸਾਨੂੰ ਵੱਡਿਆਂ ਦਾ ਸਤਿਕਾਰ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।',
+  'ਸੱਚ ਬੋਲਣਾ ਸਭ ਤੋਂ ਵੱਡਾ ਗੁਣ ਹੈ।',
+  'ਮਿਹਨਤ ਕਰਨ ਵਾਲਾ ਕਦੇ ਨਹੀਂ ਹਾਰਦਾ।',
+  'ਗੁਆਂਢੀ ਸਾਡੇ ਸੁੱਖ ਦੁੱਖ ਦੇ ਸਾਥੀ ਹੁੰਦੇ ਹਨ।',
+  'ਹਰ ਰੋਜ਼ ਅਖ਼ਬਾਰ ਪੜ੍ਹਨ ਨਾਲ ਗਿਆਨ ਵਧਦਾ ਹੈ।',
+  'ਸੜਕ ਪਾਰ ਕਰਦੇ ਸਮੇਂ ਦੋਵੇਂ ਪਾਸੇ ਵੇਖੋ।',
+  'ਗੱਡੀ ਚਲਾਉਂਦੇ ਸਮੇਂ ਮੋਬਾਈਲ ਫ਼ੋਨ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰੋ।',
+  'ਨਸ਼ੇ ਸਿਹਤ ਅਤੇ ਪਰਿਵਾਰ ਦੋਵਾਂ ਨੂੰ ਬਰਬਾਦ ਕਰਦੇ ਹਨ।',
+  'ਸਾਫ਼ ਸਫ਼ਾਈ ਰੱਖਣ ਨਾਲ ਬਿਮਾਰੀਆਂ ਦੂਰ ਰਹਿੰਦੀਆਂ ਹਨ।',
+  'ਧੀਆਂ ਪੁੱਤਰਾਂ ਨਾਲੋਂ ਕਿਸੇ ਗੱਲ ਵਿੱਚ ਘੱਟ ਨਹੀਂ ਹਨ।',
+  'ਅੰਮ੍ਰਿਤਸਰ ਵਿੱਚ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਸੁਸ਼ੋਭਿਤ ਹੈ।',
+  'ਚੰਡੀਗੜ੍ਹ ਪੰਜਾਬ ਅਤੇ ਹਰਿਆਣਾ ਦੀ ਸਾਂਝੀ ਰਾਜਧਾਨੀ ਹੈ।',
+  'ਲੁਧਿਆਣਾ ਪੰਜਾਬ ਦਾ ਸਭ ਤੋਂ ਵੱਡਾ ਸ਼ਹਿਰ ਹੈ।',
+  'ਭਾਖੜਾ ਡੈਮ ਸਤਲੁਜ ਦਰਿਆ ਉੱਤੇ ਬਣਿਆ ਹੋਇਆ ਹੈ।',
+  'ਲੋਹੜੀ ਦਾ ਤਿਉਹਾਰ ਜਨਵਰੀ ਮਹੀਨੇ ਵਿੱਚ ਮਨਾਇਆ ਜਾਂਦਾ ਹੈ।',
+  'ਦੀਵਾਲੀ ਵਾਲੀ ਰਾਤ ਹਰ ਪਾਸੇ ਰੌਸ਼ਨੀ ਹੁੰਦੀ ਹੈ।',
+  'ਕਿਤਾਬਾਂ ਪੜ੍ਹਨ ਦੀ ਆਦਤ ਮਨੁੱਖ ਨੂੰ ਸਿਆਣਾ ਬਣਾਉਂਦੀ ਹੈ।',
+  'ਸਮਾਂ ਕਿਸੇ ਦੀ ਉਡੀਕ ਨਹੀਂ ਕਰਦਾ।',
+  'ਪਿੰਡ ਦੇ ਲੋਕ ਮਿਲ ਜੁਲ ਕੇ ਰਹਿੰਦੇ ਹਨ।',
+  'ਹਰ ਬੱਚੇ ਨੂੰ ਪੜ੍ਹਨ ਦਾ ਹੱਕ ਹੈ।',
+  'ਅਸੀਂ ਹਰ ਐਤਵਾਰ ਗੁਰਦੁਆਰੇ ਜਾਂਦੇ ਹਾਂ।',
+  'ਖੇਡਾਂ ਨਾਲ ਸਰੀਰ ਤੰਦਰੁਸਤ ਰਹਿੰਦਾ ਹੈ।',
+  'ਉਸ ਨੇ ਆਪਣਾ ਕੰਮ ਪੂਰੀ ਇਮਾਨਦਾਰੀ ਨਾਲ ਕੀਤਾ।',
+  'ਬਾਜ਼ਾਰ ਵਿੱਚ ਅੱਜ ਬਹੁਤ ਭੀੜ ਸੀ।',
+  'ਮੇਰਾ ਛੋਟਾ ਭਰਾ ਦਸਵੀਂ ਜਮਾਤ ਵਿੱਚ ਪੜ੍ਹਦਾ ਹੈ।',
+  'ਸਾਨੂੰ ਬਿਜਲੀ ਅਤੇ ਪਾਣੀ ਦੀ ਬੱਚਤ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।',
+  'ਕਿਸਾਨ ਦੇਸ਼ ਦਾ ਅੰਨਦਾਤਾ ਹੈ।',
+];
+
+const OFFICE_SENTENCES = [
+  'ਆਪ ਜੀ ਦੀ ਅਰਜ਼ੀ ਪ੍ਰਾਪਤ ਹੋ ਗਈ ਹੈ।',
+  'ਇਸ ਸਬੰਧੀ ਲੋੜੀਂਦੀ ਕਾਰਵਾਈ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ।',
+  'ਸਾਰੇ ਕਰਮਚਾਰੀ ਸਮੇਂ ਸਿਰ ਦਫ਼ਤਰ ਵਿੱਚ ਹਾਜ਼ਰ ਹੋਣ।',
+  'ਇਹ ਹੁਕਮ ਤੁਰੰਤ ਪ੍ਰਭਾਵ ਨਾਲ ਲਾਗੂ ਹੋਣਗੇ।',
+  'ਉਮੀਦਵਾਰ ਆਪਣੇ ਅਸਲ ਦਸਤਾਵੇਜ਼ ਨਾਲ ਲੈ ਕੇ ਆਉਣ।',
+  'ਮੀਟਿੰਗ ਸੋਮਵਾਰ ਨੂੰ ਸਵੇਰੇ ਦਸ ਵਜੇ ਹੋਵੇਗੀ।',
+  'ਛੁੱਟੀ ਲਈ ਅਰਜ਼ੀ ਘੱਟੋ ਘੱਟ ਦੋ ਦਿਨ ਪਹਿਲਾਂ ਦਿੱਤੀ ਜਾਵੇ।',
+  'ਸਬੰਧਤ ਫ਼ਾਈਲ ਪ੍ਰਵਾਨਗੀ ਲਈ ਪੇਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।',
+  'ਸ਼ਿਕਾਇਤ ਦੀ ਪੜਤਾਲ ਕਰਕੇ ਰਿਪੋਰਟ ਭੇਜੀ ਜਾਵੇ।',
+  'ਤਨਖ਼ਾਹ ਹਰ ਮਹੀਨੇ ਦੀ ਪਹਿਲੀ ਤਾਰੀਖ਼ ਨੂੰ ਦਿੱਤੀ ਜਾਵੇਗੀ।',
+  'ਇਸ ਦਫ਼ਤਰ ਦਾ ਪੱਤਰ ਨੰਬਰ ਅਤੇ ਮਿਤੀ ਹਵਾਲੇ ਵਿੱਚ ਜ਼ਰੂਰ ਲਿਖੋ।',
+  'ਨਤੀਜਾ ਵਿਭਾਗ ਦੀ ਵੈੱਬਸਾਈਟ ਉੱਤੇ ਪਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।',
+  'ਬਿਨੈਕਾਰ ਨੂੰ ਨਿੱਜੀ ਸੁਣਵਾਈ ਦਾ ਮੌਕਾ ਦਿੱਤਾ ਜਾਵੇ।',
+  'ਸਰਕਾਰੀ ਰਿਕਾਰਡ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਣਾ ਹਰ ਕਰਮਚਾਰੀ ਦੀ ਜ਼ਿੰਮੇਵਾਰੀ ਹੈ।',
+  'ਪ੍ਰੀਖਿਆ ਕੇਂਦਰ ਵਿੱਚ ਮੋਬਾਈਲ ਫ਼ੋਨ ਲੈ ਕੇ ਜਾਣ ਦੀ ਮਨਾਹੀ ਹੈ।',
+  'ਸਾਰੀਆਂ ਸ਼ਾਖਾਵਾਂ ਆਪਣੀ ਮਹੀਨਾਵਾਰ ਰਿਪੋਰਟ ਸਮੇਂ ਸਿਰ ਭੇਜਣ।',
+  'ਦਫ਼ਤਰ ਵਿੱਚ ਸਾਰਾ ਕੰਮ ਪੰਜਾਬੀ ਭਾਸ਼ਾ ਵਿੱਚ ਕੀਤਾ ਜਾਵੇ।',
+  'ਜਨਤਾ ਦੀਆਂ ਸ਼ਿਕਾਇਤਾਂ ਦਾ ਨਿਪਟਾਰਾ ਪਹਿਲ ਦੇ ਅਧਾਰ ਉੱਤੇ ਕੀਤਾ ਜਾਵੇ।',
+  'ਇਸ ਪੱਤਰ ਦੀ ਪ੍ਰਾਪਤੀ ਦੀ ਸੂਚਨਾ ਤੁਰੰਤ ਭੇਜੀ ਜਾਵੇ।',
+  'ਉਕਤ ਕਰਮਚਾਰੀ ਦੀ ਬਦਲੀ ਜ਼ਿਲ੍ਹਾ ਦਫ਼ਤਰ ਵਿੱਚ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।',
+  'ਬਜਟ ਦੀ ਰਕਮ ਸਿਰਫ਼ ਮਨਜ਼ੂਰਸ਼ੁਦਾ ਕੰਮਾਂ ਉੱਤੇ ਹੀ ਖ਼ਰਚ ਕੀਤੀ ਜਾਵੇ।',
+  'ਅਗਲੀ ਮੀਟਿੰਗ ਦੀ ਸੂਚਨਾ ਸਾਰੇ ਮੈਂਬਰਾਂ ਨੂੰ ਭੇਜ ਦਿੱਤੀ ਜਾਵੇ।'
 ];
 
 /* ---------- Exam passages ---------- */

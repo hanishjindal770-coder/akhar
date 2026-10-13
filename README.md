@@ -4,7 +4,7 @@ A free Punjabi typing tutor for the **Raavi font** and the **Gurmukhi INSCRIPT k
 
 ## What it does
 
-- **20 step-by-step lessons.** They start with ਰ ਕ ਤ ਚ on the home row and go through the matras, the Shift letters, tippi and bindi, addak (ੱ), pair bindi (਼) and pairi rara (੍ਰ). Each drill uses real Punjabi words built only from the keys learned so far.
+- **57 lessons in seven stages, each with 6 to 8 exercises.** They start with ਕ ਤ ਰ ਚ on the home row and go through the matras, the Shift letters, tippi and bindi, addak (ੱ), pair bindi (਼), pairi rara (੍ਰ) and numerals. Then come themed word lists, sentences and full exam paragraphs. Each drill uses real Punjabi words built only from the keys learned so far.
 - **On-screen keyboard.** It highlights the next key and shows which finger presses it. You can tap it on phones.
 - **Practice mode.** It has 12 exam-style passages, common words, sentences, and a drill built from the keys you miss most.
 - **Timed exam test** (2, 5, 10 or 15 minutes). It is scored the way the board's typing-test notices describe:
