@@ -7,7 +7,7 @@ const PRESETS = [
   {id: 'quick', name: 'Quick Punjabi mock', sub: 'Punjabi only · 5 minutes', parts: ['pa'], min: 5, back: true}
 ];
 const PASS_WPM = 30, PASS_ACC = 92;
-const CHUNK_MIN = 25, CHUNK_MAX = 45, CHUNK_NEXT = 0.8;   // chunk size in words; share of a chunk to type before moving on
+const CHUNK_WORDS = 40, CHUNK_NEXT = 0.8;   // words per chunk, as on the exam screen; share of a chunk to type before moving on
 const LANG = {pa: 'Punjabi (Raavi, INSCRIPT)', en: 'English'};
 
 let X = null;    // the whole sitting
@@ -32,15 +32,11 @@ function passageFor(lang, minutes) {
   return {title: out[0].t, id: out[0].id, text: canon(out.map(p => p.x).join(' '))};
 }
 
-// Split a passage into chunks of whole sentences, like the exam software shows it.
+// Split a passage into fixed-size chunks of words, like the exam software (a chunk can end mid-sentence).
 function chunkText(text) {
-  const words = text.split(' '), out = []; let cur = [];
-  words.forEach(w => {
-    cur.push(w);
-    const end = /[।॥.?!]$/.test(w);
-    if ((end && cur.length >= CHUNK_MIN) || cur.length >= CHUNK_MAX) { out.push(cur.join(' ')); cur = []; }
-  });
-  if (cur.length) { if (cur.length < 8 && out.length) out[out.length - 1] += ' ' + cur.join(' '); else out.push(cur.join(' ')); }
+  const words = text.split(' '), out = [];
+  for (let i = 0; i < words.length; i += CHUNK_WORDS) out.push(words.slice(i, i + CHUNK_WORDS).join(' '));
+  if (out.length > 1 && out[out.length - 1].split(' ').length < 8) out[out.length - 2] += ' ' + out.pop();
   return out;
 }
 
@@ -89,15 +85,15 @@ function startPart() {
   const ps = passageFor(lang, min);
   P = {lang, min, ...ps, start: performance.now(), keys: 0, backs: 0, blurs: 0, timer: 0, running: true, chunked: X.chunked};
   if (P.chunked) { P.chunks = chunkText(P.text); P.typed = P.chunks.map(() => ''); P.ci = 0; }
-  $('#ex-part').textContent = `${X.preset.parts.length > 1 ? `Part ${X.partIdx + 1} of ${X.preset.parts.length} · ` : ''}${lang === 'pa' ? 'Punjabi' : 'English'} typing test`;
-  $('#ex-cand').textContent = `${X.name} · ${X.roll}`;
+  $('#ex-part').textContent = `${lang === 'pa' ? 'Punjabi' : 'English'} Mock Type Test${X.preset.parts.length > 1 ? ` (Part ${X.partIdx + 1} of ${X.preset.parts.length})` : ''}`;
+  $('#ex-cand').textContent = X.name; $('#ex-cand').title = `Roll no. ${X.roll}`;
   const src = $('#ex-src');
   src.textContent = P.chunked ? P.chunks[0] : P.text; src.lang = lang; src.scrollTop = 0;
-  $('#ex-chunkbar').hidden = !P.chunked; $('#ex-run').classList.toggle('chunked', P.chunked); if (P.chunked) showChunk();
+  $('#ex-chunkno').hidden = $('#ex-chunkno2').hidden = !P.chunked; $('#ex-msg').textContent = ''; $('#ex-run').classList.toggle('chunked', P.chunked); if (P.chunked) showChunk();
   src.classList.toggle('en', lang === 'en');
   const t = ta();
   t.value = ''; t.disabled = false; t.lang = lang; t.classList.toggle('en', lang === 'en');
-  t.placeholder = lang === 'pa' ? 'ਇੱਥੇ ਟਾਈਪ ਕਰੋ' : 'Type here';
+  t.placeholder = '';
   $('#ex-kbbtn').hidden = lang !== 'pa';
   $('#ex-prev').hidden = $('#ex-next').hidden = !P.chunked;
   $('#ex-kbwrap').hidden = true; t.inputMode = '';
@@ -116,7 +112,8 @@ function tick() {
 function chunkWords(i) { const v = (i === P.ci ? ta().value : P.typed[i]).trim(); return v ? v.split(/\s+/).length : 0; }
 function showChunk(msg) {
   $('#ex-src').textContent = P.chunks[P.ci];
-  $('#ex-chunkno').textContent = `Chunk ${P.ci + 1} of ${P.chunks.length}`;
+  $('#ex-chunkno').textContent = $('#ex-chunkno2').textContent = `chunk#${P.ci + 1}`;
+  $('#ex-chunkno').title = `Chunk ${P.ci + 1} of ${P.chunks.length}`;
   $('#ex-msg').textContent = msg || 'Enter or ↓ for the next chunk. Page Up and Page Down move between chunks.';
   $('#ex-msg').classList.toggle('warn', !!msg);
 }

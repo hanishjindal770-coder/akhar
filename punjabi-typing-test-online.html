@@ -60,12 +60,16 @@
   </div>
 
   <div id="ex-shell" class="ex-shell" hidden>
-    <div class="ex-bar"><span class="ex-brand guru">ਅੱਖਰ</span><span id="ex-part" class="ex-part"></span><span id="ex-cand" class="ex-cand"></span><span class="ex-time">Time left <span id="ex-clock" class="clock">10:00</span></span></div>
+    <div class="ex-bar">
+      <div class="ex-who"><span class="ex-photo" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="8"/><path d="M5 40c1-10 7-15 15-15s14 5 15 15z"/></svg></span><span id="ex-cand" class="ex-name"></span></div>
+      <div class="ex-title"><span id="ex-part"></span><span class="ex-badge" id="ex-chunkno"></span></div>
+      <div class="ex-time">Time Left <span id="ex-clock">10:00</span></div>
+    </div>
     <div id="ex-run" class="ex-body">
-      <div class="ex-chunkbar" id="ex-chunkbar" hidden><b id="ex-chunkno"></b><span id="ex-msg" aria-live="polite"></span></div>
-      <div class="ex-src" id="ex-src"></div>
-      <textarea id="ex-input" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Type the passage here"></textarea>
-      <div class="row"><button type="button" class="btn alt" id="ex-prev" hidden>↑ Previous chunk</button><button type="button" class="btn alt" id="ex-next" hidden>Next chunk ↓</button><button type="button" class="btn" id="ex-submit">Submit</button><button type="button" class="btn alt" id="ex-kbbtn" hidden>On-screen keyboard</button></div>
+      <fieldset class="ex-ref"><legend>Reference Text</legend><div class="ex-src" id="ex-src"></div></fieldset>
+      <fieldset class="ex-typ"><legend>Typing Box</legend><textarea id="ex-input" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Typing box"></textarea></fieldset>
+      <div class="ex-foot"><span class="ex-badge" id="ex-chunkno2"></span><span id="ex-msg" aria-live="polite"></span>
+        <span class="ex-btns"><button type="button" class="ex-btn" id="ex-prev" hidden>↑ Previous chunk</button><button type="button" class="ex-btn" id="ex-next" hidden>Next chunk ↓</button><button type="button" class="ex-btn" id="ex-kbbtn" hidden>On-screen keyboard</button><button type="button" class="ex-submit" id="ex-submit">Submit Your Mock Test</button></span></div>
       <div id="ex-kbwrap" hidden><div class="kb-wrap"><div class="kb" id="ex-kb"></div></div></div>
       <div id="ex-confirm" class="ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="ex-ctitle"><div class="panel"><h3 id="ex-ctitle">Submit this part?</h3><p class="muted">You cannot change it after submitting.</p><div class="row"><button type="button" class="btn" id="ex-yes">Yes, submit</button><button type="button" class="btn alt" id="ex-no">Keep typing</button></div></div></div>
     </div>
