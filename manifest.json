@@ -1,0 +1,15 @@
+{
+  "name": "Punjab Exam Prep: Punjabi typing and mock tests",
+  "short_name": "Exam Prep",
+  "description": "Raavi Punjabi typing lessons, PSSSB typing mock test and Punjab GK mock tests.",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F4F3F8",
+  "theme_color": "#A61E57",
+  "lang": "en-IN",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

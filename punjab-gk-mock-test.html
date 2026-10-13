@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Punjab GK Mock Test: free online CBT for PSSSB exams · Akhar</title>
+<meta name="description" content="Free Punjab GK mock test online for PSSSB, Punjab Police and other Punjab govt exams. Computer-based test screen with question palette, mark for review, timer, negative marking option and answers with explanations.">
+<link rel="canonical" href="https://punjabexamprep.in/punjab-gk-mock-test.html">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#A61E57">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500;600;700;800&family=Mukta+Mahee:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<script>try{var t=(JSON.parse(localStorage.getItem('akhar.v1'))||{}).settings;t=t&&t.theme;if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><b>ਅੱਖਰ</b><span>Akhar</span></a>
+  <nav class="nav" aria-label="Main"><a href="index.html#learn">Lessons</a><a href="index.html#practice">Practice</a><a href="psssb-typing-test.html">PSSSB test</a><a href="punjab-gk-mock-test.html" class="on">GK mock test</a><a href="raavi-typing-guide.html">Raavi guide</a><a href="punjab-typing-test-tips.html">Exam tips</a></nav>
+</div></header>
+<main class="wrap article">
+  <div class="eyebrow">Mock test · General knowledge</div>
+  <h1>Punjab GK mock test</h1>
+
+  <p class="lede">Practise Punjab general knowledge on a screen that works like the computer-based exam: a question palette, Save &amp; Next, Mark for Review and a timer that submits on its own. Every answer comes with a short explanation.</p>
+
+  <div id="c-app">
+    <form id="c-setup" class="panel ex-card" novalidate>
+      <div class="ex-cardhead"><span class="guru">ਪੰਜਾਬ ਜਨਰਲ ਨਾਲਜ</span><b>Punjab GK mock test</b></div>
+      <div class="ex-two">
+        <div class="field"><label for="c-name">Candidate name</label><input id="c-name" type="text" autocomplete="name" maxlength="60"><small id="c-name-err" class="err" hidden>Enter your name to continue.</small></div>
+        <div class="field"><label for="c-count">Length</label><select id="c-count"></select><small>Questions are picked at random from <span id="c-total"></span> in the bank, so each attempt is different.</small></div>
+      </div>
+      <label class="check"><input type="checkbox" id="c-neg"><span><b>Negative marking: deduct ¼ mark for each wrong answer</b><br><span class="muted">Many recent Punjab recruitment exams use negative marking. Check your notice.</span></span></label>
+      <div class="c-legend-help">
+        <b>How the exam screen works</b>
+        <ul>
+          <li><b>Save &amp; Next</b> saves your answer and opens the next question. An option you pick but do not save is not counted, just like the real exam.</li>
+          <li><b>Mark for Review &amp; Next</b> saves your answer (if any) and flags the question so you can come back to it. Marked questions that have an answer are still scored.</li>
+          <li>Use the numbered palette to jump to any question. Its colours show <span class="c-pb an sm">1</span> answered, <span class="c-pb na sm">2</span> not answered, <span class="c-pb nv sm">3</span> not visited, <span class="c-pb mk sm">4</span> marked for review and <span class="c-pb am sm">5</span> answered and marked.</li>
+        </ul>
+      </div>
+      <button class="btn" type="submit" style="align-self:flex-start">Start test</button>
+      <div id="c-history" hidden><b>Your last attempts</b><ul id="c-histlist" class="muted" style="margin:4px 0 0"></ul></div>
+    </form>
+
+    <section id="c-result" class="ex-sheet" hidden>
+      <div class="panel ex-card">
+        <div class="ex-cardhead"><span class="guru">ਨਤੀਜਾ</span><b>Result</b></div>
+        <div class="verdict" id="cr-score"></div>
+        <p class="muted" id="cr-line"></p>
+        <div class="cells" id="cr-cells"></div>
+        <div class="tbl"><table id="cr-topics"></table></div>
+        <div class="row"><button type="button" class="btn" id="cr-again">Take another test</button><a class="btn alt" href="psssb-typing-test.html">Typing mock test</a></div>
+      </div>
+      <div class="panel ex-card">
+        <div class="row" style="justify-content:space-between"><h3>Answers and explanations</h3><label class="check"><input type="checkbox" id="cr-wrong"><span>Show only wrong and skipped</span></label></div>
+        <ol class="c-review" id="cr-review"></ol>
+      </div>
+    </section>
+  </div>
+
+  <div id="c-shell" class="ex-shell c-shell" hidden>
+    <div class="ex-bar">
+      <div class="ex-who"><span class="ex-photo" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="8"/><path d="M5 40c1-10 7-15 15-15s14 5 15 15z"/></svg></span><span id="c-cand" class="ex-name"></span></div>
+      <div class="ex-title"><span id="c-title"></span></div>
+      <div class="ex-time">Time Left <span id="c-clock">25:00</span></div>
+    </div>
+    <div class="c-main">
+      <div class="c-q">
+        <div class="c-qhead"><b id="c-qno"></b><button type="button" class="ex-btn" id="c-paltoggle">Question palette</button></div>
+        <div class="c-qarea" id="c-qarea"><p class="c-qtext" id="c-qtext"></p><div class="c-opts" id="c-opts" role="radiogroup" aria-labelledby="c-qno"></div></div>
+        <div class="c-actions"><button type="button" class="c-act mark" id="c-mark">Mark for Review &amp; Next</button><button type="button" class="c-act clear" id="c-clear">Clear Response</button><button type="button" class="c-act save" id="c-save">Save &amp; Next</button></div>
+      </div>
+      <aside class="c-side" id="c-side">
+        <div class="c-legend">
+          <span><i class="c-pb an sm"></i><b id="c-n-an">0</b> Answered</span>
+          <span><i class="c-pb na sm"></i><b id="c-n-na">0</b> Not answered</span>
+          <span><i class="c-pb nv sm"></i><b id="c-n-nv">0</b> Not visited</span>
+          <span><i class="c-pb mk sm"></i><b id="c-n-mk">0</b> Marked for review</span>
+          <span><i class="c-pb am sm"></i><b id="c-n-am">0</b> Answered and marked</span>
+        </div>
+        <div class="c-pal" id="c-pal"></div>
+        <button type="button" class="ex-submit" id="c-submit">Submit</button>
+      </aside>
+    </div>
+    <div id="c-confirm" class="ex-modal" hidden role="dialog" aria-modal="true" aria-labelledby="c-ctitle"><div class="panel"><h3 id="c-ctitle">Submit the test?</h3><table id="c-sum"></table><p class="muted">You cannot change your answers after submitting.</p><div class="row"><button type="button" class="btn" id="c-yes">Yes, submit</button><button type="button" class="btn alt" id="c-no">Go back</button></div></div></div>
+  </div>
+
+  <h2>Punjab GK in Punjab government exams</h2>
+  <p>Most exams conducted by the Punjab Subordinate Services Selection Board, Punjab Police and other state recruitment bodies include a section on Punjab: its history, geography, culture, polity and economy. These questions are usually factual and can be scored quickly if you have revised them, which makes Punjab GK one of the best sections to prepare.</p>
+  <h2>Topics covered in this mock test</h2>
+  <ul>
+    <li><b>History:</b> the Sikh Gurus, Banda Singh Bahadur, Maharaja Ranjit Singh, the Anglo-Sikh wars, the freedom struggle in Punjab and the formation of the present state in 1966.</li>
+    <li><b>Geography:</b> rivers, dams, wetlands, borders and the physical divisions of Punjab.</li>
+    <li><b>Culture:</b> festivals, folk dances, crafts, literature and state symbols.</li>
+    <li><b>Polity and economy:</b> the Vidhan Sabha, seats in Parliament, the official language, agriculture and major institutions.</li>
+  </ul>
+  <p class="note">New questions are added regularly. Facts such as the number of districts or seats can change, so always confirm with current sources before your exam.</p>
+  <h2>How to use mock tests well</h2>
+  <ul>
+    <li>Take the test in one sitting with the timer running, as you would in the exam hall.</li>
+    <li>Answer the questions you are sure of first, mark the doubtful ones for review and come back to them at the end.</li>
+    <li>With negative marking on, guess only when you can rule out at least two options.</li>
+    <li>Read every explanation after the test, including for questions you got right by guessing.</li>
+  </ul>
+  <p>Preparing for a clerk or data entry post? Take the <a href="psssb-typing-test.html">PSSSB typing mock test</a> as well.</p>
+
+<div class="ad-slot" hidden></div>
+
+</main>
+<footer><div class="wrap foot">
+  <nav class="foot-links" aria-label="Site"><a href="about.html">About</a> · <a href="psssb-typing-test.html">PSSSB typing test</a> · <a href="punjab-gk-mock-test.html">Punjab GK mock test</a> · <a href="punjabi-typing-test-online.html">Punjabi typing test</a> · <a href="raavi-font-typing-test.html">Raavi font typing test</a> · <a href="raavi-typing-guide.html">Raavi typing guide</a> · <a href="punjab-typing-test-tips.html">Typing test tips</a> · <a href="punjabi-keyboard-layout.html">Keyboard layout chart</a> · <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy policy</a> · <a href="terms.html">Terms of use</a></nav>
+  <p>Akhar is an independent practice tool and is not affiliated with PSSSB or any recruitment board. Scoring follows the method published in Punjab typing-test notices; always check your own notice.</p>
+</div></footer>
+<script src="js/qbank-punjab-gk.js"></script>
+<script src="js/cbt.js"></script>
+<script src="js/ads.js"></script>
+</body>
+</html>
